@@ -38,7 +38,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>ASE.UnoGame.App</mainClass>
+							<mainClass>application.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -50,7 +50,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>ASE.UnoGame.App</mainClass>
+							<mainClass>application.Main</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
