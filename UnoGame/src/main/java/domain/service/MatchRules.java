@@ -1,6 +1,9 @@
 package domain.service;
 
 public class MatchRules {
-    private boolean blackOnBlackCardAllowed;
-    private boolean skipIfDrawedCardsBecauseOfPlusXCard;
+    private MatchStrategy strategy;
+
+    public void setStrategy(MatchStrategy strategy) {
+        this.strategy = strategy;
+    }
 }
