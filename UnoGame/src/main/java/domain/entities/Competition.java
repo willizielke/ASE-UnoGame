@@ -14,4 +14,8 @@ public class Competition {
     private MatchRules matchRules;
     private CompetitionRules competitionRules;
     private int matchesPlayed;
+
+    public String getName() {
+        return name;
+    }
 }
