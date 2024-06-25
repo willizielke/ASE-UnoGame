@@ -18,4 +18,8 @@ public class Competition {
     public String getName() {
         return name;
     }
+
+    public String getWinner(){
+        return winner;
+    }
 }

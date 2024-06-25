@@ -1,5 +1,9 @@
 package application.usecase;
 
-public class CompetitionCreationManager {
+import domain.entities.Competition;
 
+public class CompetitionCreationManager {
+    public Competition createCompetition() {
+        return new Competition();
+    }
 }
