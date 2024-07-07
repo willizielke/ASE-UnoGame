@@ -61,6 +61,18 @@ public class DeckBuilder {
                 .addPlus4Card()
                 .addPlus4Card();
 
-        return deckBuilder.build();
+        Deck deck = deckBuilder.build();
+        return shuffle(deck);
+    }
+
+    public static Deck shuffle(Deck deck) {
+        List<Card> cards = deck.getCards();
+        List<Card> shuffledCards = new ArrayList<>();
+        while (!cards.isEmpty()) {
+            int randomIndex = (int) (Math.random() * cards.size());
+            shuffledCards.add(cards.get(randomIndex));
+            cards.remove(randomIndex);
+        }
+        return new Deck(shuffledCards);
     }
 }

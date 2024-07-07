@@ -8,6 +8,7 @@ import common.GlobalConstants;
 import common.GlobalMethods;
 import common.Messages;
 import domain.entities.Competition;
+import domain.entities.Match;
 import presentation.input.InputHandler;
 
 public class MainMenuManager {
@@ -51,10 +52,14 @@ public class MainMenuManager {
         GlobalMethods.clearConsole();
         Messages.printMatchViewSelection();
         int matchOptionNr = InputHandler.getNumberBetween(1, 3);
+        MatchCreationManager matchCreationManager= new MatchCreationManager(dbService);
+        MatchProcessManager matchProcessManager= new MatchProcessManager();
         if (matchOptionNr == 1) {
-            //MatchCreationManager.createFastMatch();
+            Match match= matchCreationManager.createFastMatch();
+            //matchProcessManager.startMatch()
         } else if (matchOptionNr == 2) {
-            //MatchCreationManager.createMatch();
+            Match match = matchCreationManager.createMatch();
+            //matchProcessManager.startMatch()
         } else if (matchOptionNr == 3) {
             return;
         }

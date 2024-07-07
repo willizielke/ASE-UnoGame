@@ -41,6 +41,15 @@ public class FileDBService implements IDataPersistence {
         objectMapper.writeValue(new File(filePathPlayer), players);
     }
 
+    @Override
+    public Player saveAndReturnPlayer(String playerName) throws IOException {
+        Player player = new Player(playerName, getPlayerId());
+        List<Player> players = readAllPlayers();
+        players.add(player);
+        objectMapper.writeValue(new File(filePathPlayer), players);
+        return player;
+    }
+
     public int getPlayerId() throws IOException {
         return readAllPlayers().size();
     }

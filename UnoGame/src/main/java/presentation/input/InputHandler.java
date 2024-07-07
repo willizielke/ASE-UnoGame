@@ -1,5 +1,6 @@
 package presentation.input;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import common.Messages;
@@ -20,5 +21,21 @@ public class InputHandler {
             input = getInput();
         }
         return Integer.parseInt(input);
+    }
+
+    public static String getName(String type) throws IOException {
+        String name;
+        do {
+            name = getInput();
+            if (name.isEmpty()) {
+                Messages.printInvalidInputMessage();
+                continue;
+            }
+            name = ValidationHelper.stringIs15Characters(name);
+            if (name.isEmpty()) {
+                Messages.printNameTooLongMessage();
+            }
+        } while (name.isEmpty());
+        return name;
     }
 }

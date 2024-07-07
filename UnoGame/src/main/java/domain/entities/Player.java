@@ -5,6 +5,9 @@ public class Player {
     private PlayerHistoryStatistic playerStats;
     private int id;
 
+    public Player() {
+    }
+
     public Player(String playerName, int id) {
         this.playerName = playerName;
         this.id = id;
