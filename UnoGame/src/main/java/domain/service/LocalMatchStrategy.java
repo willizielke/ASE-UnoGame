@@ -12,7 +12,7 @@ public class LocalMatchStrategy implements MatchStrategy {
     }
 
     @Override
-    public boolean isReverseIsSkipIfOnlyTwoPlayers() {
+    public boolean reverseIsSkipIfOnlyTwoPlayers() {
         return true;
     }
 

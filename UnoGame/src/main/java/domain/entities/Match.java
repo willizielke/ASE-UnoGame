@@ -1,5 +1,6 @@
 package domain.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import domain.service.MatchRules;
@@ -8,13 +9,15 @@ public class Match {
     private List<PlayerWithCards> playersWithCardsList;
     private int winnerId;
     private MatchRules matchRules;
-    private Deck deck;
+    public Deck deck;
+    public List<Card> playedCards;
 
     public Match(List<PlayerWithCards> playersWithCardsList, Deck deck, MatchRules matchRules) {
         this.playersWithCardsList = playersWithCardsList;
         this.deck = deck;
         this.matchRules = matchRules;
-        this.winnerId = -1;
+        this.winnerId = -99;
+        this.playedCards = new ArrayList<Card>();
     }
 
     public Match() {
@@ -51,4 +54,17 @@ public class Match {
     public void setDeck(Deck deck) {
         this.deck = deck;
     }
+
+    public List<Card> getPlayedCards() {
+        return playedCards;
+    }
+
+    public void setPlayedCards(List<Card> playedCards) {
+        this.playedCards = playedCards;
+    }
+
+    public void addCard(Card card) {
+        playedCards.add(card);
+    }
+
 }

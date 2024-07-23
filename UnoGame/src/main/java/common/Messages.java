@@ -45,6 +45,25 @@ public class Messages {
         System.out.print("(" + now + "/" + end + ") ");
     }
 
+    public static final void printNextMove(String playerName, boolean hasAlreadyPulled, int cardsToDraw) {
+        System.out.print(playerName + " please enter the number of your card(s) ");
+        if (!hasAlreadyPulled) {
+            System.out.println("or pull " + cardsToDraw + " card(s).\n0. Pull Cards");
+        } else {
+            System.out.println("or skip (0).\n0. Skip");
+        }
+
+    }
+
+    public static final void printWishColorMessage() {
+        System.out.println("Please enter the number of the color you wish.\n1. " + GlobalConstants.RED + "\n2. "
+                + GlobalConstants.GREEN + "\n3. " + GlobalConstants.BLUE + "\n4. " + GlobalConstants.YELLOW);
+    }
+
+    public static final void printMatchOverMessage(String playerName) {
+        System.out.println(playerName + " has won the game!");
+    }
+
     // invalid Messages
     public static final void printInvalidInputMessageNumberBetween(int lowerBound, int upperBound) {
         System.out.println("Invalid input. Please enter a number between " + lowerBound + " and " + upperBound + ".");

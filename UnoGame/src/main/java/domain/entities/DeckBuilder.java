@@ -12,6 +12,10 @@ public class DeckBuilder {
         this.cards = new ArrayList<>();
     }
 
+    public DeckBuilder(List<Card> cards) {
+        this.cards = cards;
+    }
+
     public DeckBuilder addNumberCard(String color, int number) {
         cards.add(new NumberCard(color, number));
         return this;

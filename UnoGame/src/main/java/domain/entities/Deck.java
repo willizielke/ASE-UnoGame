@@ -16,4 +16,8 @@ public class Deck {
     public Deck(List<Card> cards) {
         this.cards = cards;
     }
+
+    public Card remove(int index) {
+        return cards.remove(index);
+    }
 }

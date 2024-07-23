@@ -7,6 +7,10 @@ public class MatchRules {
         this.strategy = strategy;
     }
 
+    public MatchStrategy getStrategy() {
+        return strategy;
+    }	
+
     public void setStrategy(MatchStrategy strategy) {
         this.strategy = strategy;
     }

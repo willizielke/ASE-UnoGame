@@ -13,7 +13,7 @@ public class FastMatch extends Match {
         List<PlayerWithCards> playersWithCardsList = new ArrayList<PlayerWithCards>();
         Deck deck = DeckBuilder.createDeck();
         for (int i = 0; i < playerCount; i++) {
-            playersWithCardsList.add(new PlayerWithCards(new Player(GlobalConstants.PLAYER + (i + 0), i + 0), new ArrayList<Card>()));
+            playersWithCardsList.add(new PlayerWithCards(new Player(GlobalConstants.PLAYER +"_"+ (i), -i), new ArrayList<Card>()));
             for (int j = 0; j < 7; j++) {
                 playersWithCardsList.get(i).addCard(deck.getCards().remove(0));
             }
@@ -21,6 +21,7 @@ public class FastMatch extends Match {
         MatchRules matchRules = new MatchRules(new OriginalMatchStrategy());
         setPlayersWithCardsList(playersWithCardsList);
         setDeck(deck);
+        setPlayedCards(new ArrayList<Card>());
         setMatchRules(matchRules);
     }
 }

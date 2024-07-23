@@ -3,7 +3,7 @@ package domain.service;
 public interface MatchStrategy {
     boolean isBlackOnBlackCardAllowed();
     boolean isSkipIfDrawedCardsBecauseOfPlusXCard();
-    boolean isReverseIsSkipIfOnlyTwoPlayers();
+    boolean reverseIsSkipIfOnlyTwoPlayers();
     int getCardsToDrawWhenForgotToSayUno();
     int getCardsToDrawWhenForgotToSayUnoUno();
 }

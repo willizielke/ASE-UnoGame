@@ -56,10 +56,10 @@ public class MainMenuManager {
         MatchProcessManager matchProcessManager= new MatchProcessManager();
         if (matchOptionNr == 1) {
             Match match= matchCreationManager.createFastMatch();
-            //matchProcessManager.startMatch()
+            matchProcessManager.startMatch(match);
         } else if (matchOptionNr == 2) {
             Match match = matchCreationManager.createMatch();
-            //matchProcessManager.startMatch()
+            matchProcessManager.startMatch(match);
         } else if (matchOptionNr == 3) {
             return;
         }

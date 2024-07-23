@@ -28,7 +28,7 @@ public class MatchCreationManager {
 
     public Match createFastMatch() {
         Messages.printGetPlayerCountMessage();
-        int playerCount = InputHandler.getNumberBetween(1, 10);
+        int playerCount = InputHandler.getNumberBetween(2, 10);
         return new FastMatch(playerCount);
     }
 
@@ -60,6 +60,8 @@ public class MatchCreationManager {
         match.setPlayersWithCardsList(playersWithCardsList);
         match.setDeck(deck);
         match.setMatchRules(matchRules);
+        match.setPlayedCards(new ArrayList<Card>());
+
         return match;
     }
 
@@ -104,9 +106,9 @@ public class MatchCreationManager {
         Messages.printMatchRulesSelection();
         int matchRulesOption = InputHandler.getNumberBetween(1, 2);
         if (matchRulesOption == 1) {
-            return new MatchRules(new OriginalMatchStrategy());
-        } else {
             return new MatchRules(new LocalMatchStrategy());
+        } else {
+            return new MatchRules(new OriginalMatchStrategy());
         }
     }
 }

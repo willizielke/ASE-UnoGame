@@ -18,7 +18,7 @@ public class CustomMatchStrategy implements MatchStrategy {
     }
 
     @Override
-    public boolean isReverseIsSkipIfOnlyTwoPlayers() {
+    public boolean reverseIsSkipIfOnlyTwoPlayers() {
         return reverseIsSkipIfOnlyTwoPlayers;
     }
 

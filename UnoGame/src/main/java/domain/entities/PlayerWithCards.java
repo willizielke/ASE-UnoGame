@@ -31,4 +31,8 @@ public class PlayerWithCards {
         this.playerCards = playerCards;
     }
 
+    public Card removeCard(int index) {
+        return playerCards.remove(index);
+    }
+
 }
