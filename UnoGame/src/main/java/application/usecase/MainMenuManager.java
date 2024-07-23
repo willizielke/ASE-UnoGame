@@ -53,7 +53,7 @@ public class MainMenuManager {
         Messages.printMatchViewSelection();
         int matchOptionNr = InputHandler.getNumberBetween(1, 3);
         MatchCreationManager matchCreationManager= new MatchCreationManager(dbService);
-        MatchProcessManager matchProcessManager= new MatchProcessManager();
+        MatchProcessManager matchProcessManager= new MatchProcessManager(dbService);
         if (matchOptionNr == 1) {
             Match match= matchCreationManager.createFastMatch();
             matchProcessManager.startMatch(match);

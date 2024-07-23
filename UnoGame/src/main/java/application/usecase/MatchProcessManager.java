@@ -1,18 +1,23 @@
 package application.usecase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import application.interfaces.IDataPersistence;
 import common.GlobalConstants;
 import common.GlobalMethods;
 import common.Messages;
 import domain.entities.Card;
 import domain.entities.Deck;
 import domain.entities.DeckBuilder;
+import domain.entities.FastMatch;
 import domain.entities.Match;
 import domain.entities.NumberCard;
+import domain.entities.Player;
+import domain.entities.PlayerHistoryStatistic;
 import domain.entities.PlayerWithCards;
 import domain.entities.Plus4Card;
 import domain.entities.SpecialCard;
@@ -20,6 +25,7 @@ import domain.entities.WishCard;
 import presentation.input.InputHandler;
 
 public class MatchProcessManager {
+    private IDataPersistence dbService;
     private Match match;
     private PlayerWithCards playerWithCards;
     private boolean hasAlreadyPulled;
@@ -31,7 +37,11 @@ public class MatchProcessManager {
     private boolean isClockwise = true;
     private Card playedCard;
 
-    public void startMatch(Match match) {
+    public MatchProcessManager(IDataPersistence dbService) {
+        this.dbService = dbService;
+    }
+
+    public void startMatch(Match match) throws IOException {
         this.match = match;
         this.nextPlayer = whoStarts(match.getPlayersWithCardsList().size());
         match.playedCards.add(match.deck.remove(0));
@@ -39,6 +49,9 @@ public class MatchProcessManager {
 
         while (matchIsNotOver(match)) {
             playTurn();
+        }
+        if (!(match instanceof FastMatch)) {
+            setPlayerStatistics();
         }
     }
 
@@ -366,6 +379,28 @@ public class MatchProcessManager {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public void setPlayerStatistics() throws IOException {
+        for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
+            int points = 0;
+            for (Card card : playerWithCards.getPlayerCards()) {
+                points += card.getPoints();
+            }
+            PlayerHistoryStatistic playerHistoryStatistic = playerWithCards.getPlayer().getPlayerStats();
+            playerHistoryStatistic.setAccumulatedPoints(playerHistoryStatistic.getAccumulatedPoints() + points);
+            playerHistoryStatistic.setMatchCount(playerHistoryStatistic.getMatchCount() + 1);
+            if (playerWithCards.getPlayerCards().size() == 0) {
+                playerHistoryStatistic.setMatchWinCount(playerHistoryStatistic.getMatchWinCount() + 1);
+            } else {
+                playerHistoryStatistic.setMatchLoseCount(playerHistoryStatistic.getMatchLoseCount() + 1);
+            }
+            playerHistoryStatistic.setPointsPerMatch((double) (playerHistoryStatistic.getAccumulatedPoints())
+                    / playerHistoryStatistic.getMatchCount());
+            Player updatedPlayer = playerWithCards.getPlayer();
+            updatedPlayer.setPlayerStats(playerHistoryStatistic);
+            dbService.updatePlayer(updatedPlayer);
         }
     }
 }

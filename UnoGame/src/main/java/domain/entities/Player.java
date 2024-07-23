@@ -21,4 +21,12 @@ public class Player {
     public String getPlayerName() {
         return playerName;
     }
+
+    public PlayerHistoryStatistic getPlayerStats() {
+        return playerStats;
+    }
+
+    public void setPlayerStats(PlayerHistoryStatistic playerStats) {
+        this.playerStats = playerStats;
+    }
 }

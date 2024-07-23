@@ -4,6 +4,10 @@ public abstract class Card {
     private int points;
     private String color;
 
+    public int getPoints() {
+        return points;
+    }
+
     public String getColor() {
         return color;
     }
@@ -25,6 +29,7 @@ public abstract class Card {
         return points == card.points &&
                 (color != null ? color.equals(card.color) : card.color == null);
     }
+
     @Override
     public String toString() {
         return "";
