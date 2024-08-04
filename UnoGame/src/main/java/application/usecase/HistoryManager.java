@@ -1,5 +1,96 @@
 package application.usecase;
 
+import java.io.IOException;
+import java.util.List;
+
+import application.interfaces.IDataPersistence;
+import common.Messages;
+import domain.entities.Player;
+import domain.entities.PlayerHistoryStatistic;
+import presentation.input.InputHandler;
+
 public class HistoryManager {
+    private IDataPersistence dbService;
+
+    public HistoryManager(IDataPersistence dbService) {
+        this.dbService = dbService;
+    }
+
+    public void printHistory() throws IOException {
+        // get player list of the db and show statistics in a table
+        List<Player> players = dbService.readAllPlayers();
+        // the tables should have these:
+        /*
+         * private int competitionCount;
+         * private int competitionWinCount;
+         * private int matchCount;
+         * private int matchWinCount;
+         * private int matchLoseCount;
+         * private int accumulatedPoints;
+         * private double pointsPerMatch;
+         */
+
+        // create the table
+        int sortOption;
+        do {
+
+            System.out.printf("%-15s | %-18s | %-22s | %-11s | %-15s | %-16s | %-19s | %-15s%n",
+                    "Player Name", "Competition Count", "Competition Win Count", "Match Count",
+                    "Match Win Count", "Match Lose Count", "Accumulated Points", "Points Per Match");
+
+            for (Player player : players) {
+                PlayerHistoryStatistic playerHistory = player.getPlayerStats();
+                System.out.printf("%-15s | %-18d | %-22d | %-11d | %-15d | %-16d | %-19d | %-15.2f%n",
+                        player.getPlayerName(),
+                        playerHistory.getCompetitionCount(),
+                        playerHistory.getCompetitionWinCount(),
+                        playerHistory.getMatchCount(),
+                        playerHistory.getMatchWinCount(),
+                        playerHistory.getMatchLoseCount(),
+                        playerHistory.getAccumulatedPoints(),
+                        playerHistory.getPointsPerMatch());
+            }
+
+            Messages.printSortOptions();
+            sortOption = InputHandler.getNumberBetween(1, 8);
+            // sort the table after the selected header
+            switch (sortOption) {
+                case 1:
+                    players.sort((p1, p2) -> p2.getPlayerStats().getCompetitionCount()
+                            - p1.getPlayerStats().getCompetitionCount());
+                    break;
+                case 2:
+                    players.sort((p1, p2) -> p2.getPlayerStats().getCompetitionWinCount()
+                            - p1.getPlayerStats().getCompetitionWinCount());
+                    break;
+                case 3:
+                    players.sort((p1, p2) -> p2.getPlayerStats().getMatchCount() - p1.getPlayerStats().getMatchCount());
+                    break;
+                case 4:
+                    players.sort(
+                            (p1, p2) -> p2.getPlayerStats().getMatchWinCount()
+                                    - p1.getPlayerStats().getMatchWinCount());
+                    break;
+                case 5:
+                    players.sort(
+                            (p1, p2) -> p2.getPlayerStats().getMatchLoseCount()
+                                    - p1.getPlayerStats().getMatchLoseCount());
+                    break;
+                case 6:
+                    players.sort((p1, p2) -> p2.getPlayerStats().getAccumulatedPoints()
+                            - p1.getPlayerStats().getAccumulatedPoints());
+                    break;
+                case 7:
+                    players.sort((p1, p2) -> (int) (p2.getPlayerStats().getPointsPerMatch()
+                            - p1.getPlayerStats().getPointsPerMatch()));
+                    break;
+                case 8:
+                    // back
+                    break;
+                default:
+                    break;
+            }
+        } while (sortOption != 8);
+    }
 
 }

@@ -102,6 +102,11 @@ public class Messages {
         System.out.println("Wished color: " + wishedColor);
     }
 
+    public static final void printSortOptions() {
+        System.out.println(
+                "\nPlease enter the number of one of the listed options. Sort by:\n1 - Competition Count\n2 - Competition Win Count\n3 - Match Count\n4 - Match Win Count\n5 - Match Lose Count\n6 - Accumulated Points\n7 - Points Per Match\n8 - Back");
+    }
+
     // invalid Messages
     public static final void printInvalidInputMessageNumberBetween(int lowerBound, int upperBound) {
         System.out.println("Invalid input. Please enter a number between " + lowerBound + " and " + upperBound + ".");

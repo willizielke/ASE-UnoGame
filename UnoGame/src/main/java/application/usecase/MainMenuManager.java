@@ -33,7 +33,7 @@ public class MainMenuManager {
                     StartCompetitionMenu();
                     break;
                 case 3:
-                    // StartHistoryMenu();
+                    StartHistoryMenu();
                     break;
                 case 4:
                     // StartSettingsMenu()
@@ -101,5 +101,10 @@ public class MainMenuManager {
         int optionNr = InputHandler.getNumberBetween(1, competitions.size());
         Competition competition = dbService.loadCompetition(competitions.get(optionNr - 1).getName());
         return competition;
+    }
+
+    public void StartHistoryMenu() throws IOException {
+        GlobalMethods.clearConsole();
+        new HistoryManager(dbService).printHistory();
     }
 }
