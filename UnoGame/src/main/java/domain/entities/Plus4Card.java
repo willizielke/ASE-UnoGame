@@ -8,6 +8,6 @@ public class Plus4Card extends Card {
     }
     @Override
     public String toString() {
-        return "Plus4Card";
+        return GlobalConstants.PLUS4CARD;
     }
 }

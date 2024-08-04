@@ -271,9 +271,10 @@ public class MatchProcessManager {
     }
 
     public void printNextPlayerMove() {
-        System.out.println("Last card: " + lastCard);
+        Messages.printLastCard();
+        System.out.println(lastCard);
         if (lastCard.getColor().equals(GlobalConstants.BLACK)) {
-            System.out.println("Wished color: " + wishedColor);
+            Messages.printWishedColor(wishedColor);
         }
         Messages.printNextMove(playerWithCards.getPlayer().getPlayerName(), hasAlreadyPulled, cardsToDraw);
         printCardsOfNextPlayer(playerWithCards.getPlayerCards());
@@ -400,6 +401,7 @@ public class MatchProcessManager {
                     / playerHistoryStatistic.getMatchCount());
             Player updatedPlayer = playerWithCards.getPlayer();
             updatedPlayer.setPlayerStats(playerHistoryStatistic);
+            playerWithCards.setTotalCardPoints(points);
             dbService.updatePlayer(updatedPlayer);
         }
     }

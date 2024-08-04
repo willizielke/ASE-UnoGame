@@ -16,9 +16,19 @@ public class Messages {
                 "Please enter the number of one of the listed options.\n1 - New Competition | 2 - Load Competition | 3 - Back");
     }
 
+    public static final void printCompetitionProcessViewSelection() {
+        System.out.println(
+                "Please enter the number of one of the listed options.\n1 - Start Next Match | 2 - View all Matches played | 3 - Back");
+    }
+
     public static final void printMatchRulesSelection() {
         System.out.println(
                 "Please enter the number of one of the listed options.\n1 - Local Rules | 2 - Original Rules");
+    }
+
+    public static final void printCompetitionRulesSelection() {
+        System.out.println(
+                "Please enter the number of one of the listed options.\n1 - Match Wins | 2 - Last one under 101 Points");
     }
 
     public static final void printCreateOrLoadMessage(String type) {
@@ -39,6 +49,10 @@ public class Messages {
 
     public static final void printGetNameMessage(String type) {
         System.out.println("Please enter the name of the " + type + " (max 15 characters)");
+    }
+
+    public static final void getMatchesToWin() {
+        System.out.println("Please enter the number of matches to win the competition.");
     }
 
     public static final void printSlash(int now, int end) {
@@ -62,6 +76,30 @@ public class Messages {
 
     public static final void printMatchOverMessage(String playerName) {
         System.out.println(playerName + " has won the game!");
+    }
+
+    public static final void printMatchScores() {
+        System.out.println("Match scores:");
+    }
+
+    public static final void printMatchNumber(int matchNumber) {
+        System.out.println("Match " + matchNumber + ":");
+    }
+
+    public static final void printTotalScores() {
+        System.out.println("Total scores:");
+    }
+
+    public static final void printTotalWins() {
+        System.out.println("Total wins:");
+    }
+
+    public static final void printLastCard() {
+        System.out.println("Last card: ");
+    }
+
+    public static final void printWishedColor(String wishedColor) {
+        System.out.println("Wished color: " + wishedColor);
     }
 
     // invalid Messages

@@ -71,7 +71,11 @@ public class MainMenuManager {
         int competitionOptionNr = InputHandler.getNumberBetween(1, 3);
         Competition competition = new Competition();
         if (competitionOptionNr == 1) {
-            //competition = CompetitionCreationManager.createCompetition();
+            competition = new CompetitionCreationManager(dbService).createCompetition();
+            if (competition == null) {
+                return;
+            }
+            new CompetitionProcessManager(dbService).startCompetition(competition);
         } else if (competitionOptionNr == 2) {
             competition = loadCompetition();
             if (competition == null) {

@@ -15,11 +15,13 @@ public class GlobalConstants {
     public static final String BLUE = "BLUE";
     public static final String YELLOW = "YELLOW";
     public static final List<String> COLORS = Arrays.asList(RED, GREEN, BLUE, YELLOW);
-    // Card symbols
+    // Card symbols and names
     public static final String ZERO = "ZERO";
     public static final String REVERSE = "REVERSE";
     public static final String PLUS2 = "PLUS2";
     public static final String SKIP = "SKIP";
+    public static final String PLUS4CARD = "PLUS4";
+    public static final String WISHCARD = "WISHCARD";
     // DB Types
     public static final String COMPETITION = "COMPETITION";
     public static final String PLAYER = "PLAYER";

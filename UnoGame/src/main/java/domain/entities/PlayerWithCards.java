@@ -5,6 +5,15 @@ import java.util.List;
 public class PlayerWithCards {
     private Player player;
     private List<Card> playerCards;
+    private int totalCardPoints;
+
+    public int getTotalCardPoints() {
+        return totalCardPoints;
+    }
+
+    public void setTotalCardPoints(int totalCardPoints) {
+        this.totalCardPoints = totalCardPoints;
+    }
 
     public PlayerWithCards(Player player, List<Card> playerCards) {
         this.player = player;

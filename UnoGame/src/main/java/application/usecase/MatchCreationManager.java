@@ -46,14 +46,14 @@ public class MatchCreationManager {
                 Messages.printSlash(i, playerCount);
                 player = createOrLoadPlayer();
                 playerIsAlreadyInTheMatch = playerIsAlreadyInTheMatch(player, playersWithCardsList);
-                if(playerIsAlreadyInTheMatch){
+                if (playerIsAlreadyInTheMatch) {
                     Messages.printInvalidInputMessagePlayerIsAlreadyInTheGame();
                 }
             } while (playerIsAlreadyInTheMatch);
             playersWithCardsList.add(
                     new PlayerWithCards(player, new ArrayList<Card>()));
             for (int j = 0; j < 7; j++) {
-                playersWithCardsList.get(i-1).addCard(deck.getCards().remove(0));
+                playersWithCardsList.get(i - 1).addCard(deck.getCards().remove(0));
             }
         }
         MatchRules matchRules = getMatchRules();
@@ -62,6 +62,25 @@ public class MatchCreationManager {
         match.setMatchRules(matchRules);
         match.setPlayedCards(new ArrayList<Card>());
 
+        return match;
+    }
+
+    public Match createCompetitionMatch(List<Player> players, MatchRules matchRules) {
+        Match match = new Match();
+        List<PlayerWithCards> playersWithCardsList = new ArrayList<PlayerWithCards>();
+        Deck deck = DeckBuilder.createDeck();
+        for (int i = 0; i < players.size(); i++) {
+            playersWithCardsList.add(
+                    new PlayerWithCards(players.get(i), new ArrayList<Card>()));
+            for (int j = 0; j < 7; j++) {
+                playersWithCardsList.get(i).addCard(deck.getCards().remove(0));
+            }
+        }
+        match.setPlayersWithCardsList(playersWithCardsList);
+        match.setDeck(deck);
+        match.setMatchRules(matchRules);
+        match.setPlayedCards(new ArrayList<Card>());
+        
         return match;
     }
 

@@ -8,6 +8,6 @@ public class WishCard extends Card {
     }
     @Override
     public String toString() {
-        return "Wishcard";
+        return GlobalConstants.WISHCARD;
     }
 }
