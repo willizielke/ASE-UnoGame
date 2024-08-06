@@ -25,5 +25,4 @@ public interface IDataPersistence {
     List<MatchStrategy> readAllMatchStrategies() throws IOException;
     MatchStrategy loadMatchStrategy(int number) throws IOException;
     void updateMatchStrategy(MatchStrategy matchStrategy, int number) throws IOException;
-
 }

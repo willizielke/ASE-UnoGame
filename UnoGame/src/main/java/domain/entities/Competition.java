@@ -13,12 +13,13 @@ public class Competition {
     private CompetitionRules competitionRules;
     private List<PlayerCurrentCompetitionStatistic> playerCurrentCompetitionStatistics;
     private List<Match> matches;
-    private String winner;
+    private int winnerId;
 
     public Competition() {
         players = new ArrayList<>();
         playerCurrentCompetitionStatistics = new ArrayList<>();
         matches = new ArrayList<>();
+        winnerId = -1;
     }
 
     public String getName() {
@@ -29,8 +30,8 @@ public class Competition {
         this.name = name;
     }
 
-    public String getWinner() {
-        return winner;
+    public int getWinnerId() {
+        return winnerId;
     }
 
     public List<Player> getPlayers() {
@@ -74,8 +75,13 @@ public class Competition {
     }
 
     public void addPlayerCurrentCompetitionStatistic(Player player) {
-        PlayerCurrentCompetitionStatistic playerCurrentCompetitionStatistic = new PlayerCurrentCompetitionStatistic(player);
+        PlayerCurrentCompetitionStatistic playerCurrentCompetitionStatistic = new PlayerCurrentCompetitionStatistic(
+                player);
         playerCurrentCompetitionStatistics.add(playerCurrentCompetitionStatistic);
+    }
+
+    public void setWinnerId(int id) {
+        this.winnerId = id;
     }
 
 }

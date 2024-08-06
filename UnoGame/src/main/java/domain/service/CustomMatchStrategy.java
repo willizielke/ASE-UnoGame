@@ -1,5 +1,11 @@
 package domain.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("custom")
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class CustomMatchStrategy implements MatchStrategy {
     private boolean blackOnBlackCardAllowed;
     private boolean skipIfDrawedCardsBecauseOfPlusXCard;

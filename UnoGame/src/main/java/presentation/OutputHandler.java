@@ -1,6 +1,6 @@
-package common;
+package presentation;
 
-public class Messages {
+public class OutputHandler {
     public static final void printMainMenuSelection() {
         System.out.println(
                 "Please enter the number of one of the listed options.\n1 - Match | 2 - Competition | 3 - History | 4 - Settings | 5 - Exit");
@@ -70,8 +70,7 @@ public class Messages {
     }
 
     public static final void printWishColorMessage() {
-        System.out.println("Please enter the number of the color you wish.\n1. " + GlobalConstants.RED + "\n2. "
-                + GlobalConstants.GREEN + "\n3. " + GlobalConstants.BLUE + "\n4. " + GlobalConstants.YELLOW);
+        System.out.println("Please enter the number of the color you wish.\n1. Red\n2. Green\n3. Blue\n4. Yellow");
     }
 
     public static final void printMatchOverMessage(String playerName) {
@@ -87,11 +86,11 @@ public class Messages {
     }
 
     public static final void printTotalScores() {
-        System.out.println("Total scores:");
+        System.out.println("Total scores (you get elimination if more than 101):");
     }
 
-    public static final void printTotalWins() {
-        System.out.println("Total wins:");
+    public static final void printTotalWins(int matchesToWin) {
+        System.out.println("Total wins (matches to win " + matchesToWin + "):");
     }
 
     public static final void printLastCard() {
@@ -105,6 +104,11 @@ public class Messages {
     public static final void printSortOptions() {
         System.out.println(
                 "\nPlease enter the number of one of the listed options. Sort by:\n1 - Competition Count\n2 - Competition Win Count\n3 - Match Count\n4 - Match Win Count\n5 - Match Lose Count\n6 - Accumulated Points\n7 - Points Per Match\n8 - Back");
+    }
+
+    // printWinnerAndEndCompetition
+    public static final void printWinnerOfCompetition(String winnerName) {
+        System.out.println("The winner of the competition is: " + winnerName);
     }
 
     // invalid Messages
@@ -126,5 +130,19 @@ public class Messages {
 
     public static final void printInvalidInputMessagePlayerIsAlreadyInTheGame() {
         System.out.println("The Player is already in the Game. Please enter a different Player.");
+    }
+
+    // clear console
+    public static void clearConsole() {
+        // Clear console workaround
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                Runtime.getRuntime().exec("clear");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

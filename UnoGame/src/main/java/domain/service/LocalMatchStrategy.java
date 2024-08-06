@@ -1,6 +1,14 @@
 package domain.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("local")
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class LocalMatchStrategy implements MatchStrategy {
+    public LocalMatchStrategy() {
+    }
     @Override
     public boolean isBlackOnBlackCardAllowed() {
         return true;

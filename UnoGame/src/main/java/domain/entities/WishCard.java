@@ -1,10 +1,8 @@
 package domain.entities;
 
-import common.GlobalConstants;
-
 public class WishCard extends Card {
     public WishCard() {
-        super(20, GlobalConstants.BLACK);
+        super(20, CardColor.BLACK);
     }
 
     @Override
@@ -17,6 +15,6 @@ public class WishCard extends Card {
     
     @Override
     public String toString() {
-        return GlobalConstants.WISHCARD;
+        return CardNames.WISH.toString();
     }
 }

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.interfaces.IDataPersistence;
-import common.GlobalConstants;
-import common.Messages;
 import domain.entities.Card;
 import domain.entities.Deck;
 import domain.entities.DeckBuilder;
@@ -17,7 +15,8 @@ import domain.entities.PlayerWithCards;
 import domain.service.LocalMatchStrategy;
 import domain.service.MatchRules;
 import domain.service.OriginalMatchStrategy;
-import presentation.input.InputHandler;
+import presentation.InputHandler;
+import presentation.OutputHandler;
 
 public class MatchCreationManager {
     private IDataPersistence dbService;
@@ -27,13 +26,13 @@ public class MatchCreationManager {
     }
 
     public Match createFastMatch() {
-        Messages.printGetPlayerCountMessage();
+        OutputHandler.printGetPlayerCountMessage();
         int playerCount = InputHandler.getNumberBetween(2, 10);
         return new FastMatch(playerCount);
     }
 
     public Match createMatch() throws IOException {
-        Messages.printGetPlayerCountMessage();
+        OutputHandler.printGetPlayerCountMessage();
         Match match = new Match();
 
         int playerCount = InputHandler.getNumberBetween(1, 10);
@@ -43,11 +42,11 @@ public class MatchCreationManager {
             Player player = null;
             boolean playerIsAlreadyInTheMatch = false;
             do {
-                Messages.printSlash(i, playerCount);
+                OutputHandler.printSlash(i, playerCount);
                 player = createOrLoadPlayer();
                 playerIsAlreadyInTheMatch = playerIsAlreadyInTheMatch(player, playersWithCardsList);
                 if (playerIsAlreadyInTheMatch) {
-                    Messages.printInvalidInputMessagePlayerIsAlreadyInTheGame();
+                    OutputHandler.printInvalidInputMessagePlayerIsAlreadyInTheGame();
                 }
             } while (playerIsAlreadyInTheMatch);
             playersWithCardsList.add(
@@ -85,14 +84,14 @@ public class MatchCreationManager {
     }
 
     public Player createPlayer() throws IOException {
-        Messages.printGetNameMessage(GlobalConstants.PLAYER);
-        String playerName = InputHandler.getName(GlobalConstants.PLAYER);
+        OutputHandler.printGetNameMessage(UseCaseConstants.PLAYER);
+        String playerName = InputHandler.getName(UseCaseConstants.PLAYER);
         Player player = dbService.saveAndReturnPlayer(playerName);
         return player;
     }
 
     public Player loadPlayer() throws IOException {
-        Messages.printLoadMessage(GlobalConstants.PLAYER);
+        OutputHandler.printLoadMessage(UseCaseConstants.PLAYER);
         List<Player> players = dbService.readAllPlayers();
         for (int i = 0; i < players.size(); i++) {
             System.out.println((i + 1) + ". " + players.get(i).getPlayerName());
@@ -103,7 +102,7 @@ public class MatchCreationManager {
     }
 
     public Player createOrLoadPlayer() throws IOException {
-        Messages.printCreateOrLoadMessage(GlobalConstants.PLAYER);
+        OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
         int option = InputHandler.getNumberBetween(1, 2);
         if (option == 1) {
             return createPlayer();
@@ -122,7 +121,7 @@ public class MatchCreationManager {
     }
 
     public MatchRules getMatchRules() {
-        Messages.printMatchRulesSelection();
+        OutputHandler.printMatchRulesSelection();
         int matchRulesOption = InputHandler.getNumberBetween(1, 2);
         if (matchRulesOption == 1) {
             return new MatchRules(new LocalMatchStrategy());

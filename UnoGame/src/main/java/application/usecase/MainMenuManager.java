@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import application.interfaces.IDataPersistence;
-import common.GlobalConstants;
-import common.GlobalMethods;
-import common.Messages;
 import domain.entities.Competition;
 import domain.entities.Match;
-import presentation.input.InputHandler;
+import presentation.InputHandler;
+import presentation.OutputHandler;
 
 public class MainMenuManager {
 
@@ -22,9 +20,10 @@ public class MainMenuManager {
     public void StartApplication() throws IOException {
         int mainOptionNr = 0;
         while (mainOptionNr != 5) {
-            GlobalMethods.clearConsole();
-            Messages.printMainMenuSelection();
-            mainOptionNr = InputHandler.getNumberBetween(1, 5);;
+            OutputHandler.clearConsole();
+            OutputHandler.printMainMenuSelection();
+            mainOptionNr = InputHandler.getNumberBetween(1, 5);
+            ;
             switch (mainOptionNr) {
                 case 1:
                     StartMatchMenu();
@@ -49,13 +48,13 @@ public class MainMenuManager {
     }
 
     public void StartMatchMenu() throws IOException {
-        GlobalMethods.clearConsole();
-        Messages.printMatchViewSelection();
+        OutputHandler.clearConsole();
+        OutputHandler.printMatchViewSelection();
         int matchOptionNr = InputHandler.getNumberBetween(1, 3);
-        MatchCreationManager matchCreationManager= new MatchCreationManager(dbService);
-        MatchProcessManager matchProcessManager= new MatchProcessManager(dbService);
+        MatchCreationManager matchCreationManager = new MatchCreationManager(dbService);
+        MatchProcessManager matchProcessManager = new MatchProcessManager(dbService);
         if (matchOptionNr == 1) {
-            Match match= matchCreationManager.createFastMatch();
+            Match match = matchCreationManager.createFastMatch();
             matchProcessManager.startMatch(match);
         } else if (matchOptionNr == 2) {
             Match match = matchCreationManager.createMatch();
@@ -66,8 +65,8 @@ public class MainMenuManager {
     }
 
     public void StartCompetitionMenu() throws IOException {
-        GlobalMethods.clearConsole();
-        Messages.printCompetitionViewSelection();
+        OutputHandler.clearConsole();
+        OutputHandler.printCompetitionViewSelection();
         int competitionOptionNr = InputHandler.getNumberBetween(1, 3);
         Competition competition = new Competition();
         if (competitionOptionNr == 1) {
@@ -81,6 +80,7 @@ public class MainMenuManager {
             if (competition == null) {
                 return;
             }
+            new CompetitionProcessManager(dbService).startCompetition(competition);
         } else if (competitionOptionNr == 3) {
             return;
         }
@@ -89,12 +89,12 @@ public class MainMenuManager {
     public Competition loadCompetition() throws IOException {
         List<Competition> competitions = dbService.readAllCompetitions();
         if (competitions.size() == 0) {
-            Messages.printNotInDBMessage(GlobalConstants.COMPETITION);
+            OutputHandler.printNotInDBMessage(UseCaseConstants.COMPETITION);
             return null;
         }
-        Messages.printLoadMessage(GlobalConstants.COMPETITION);
+        OutputHandler.printLoadMessage(UseCaseConstants.COMPETITION);
         for (int i = 0; i < competitions.size(); i++) {
-            if (competitions.get(i).getWinner().isEmpty()) {
+            if (competitions.get(i).getWinnerId() == -1) {
                 System.out.println((i + 1) + ". " + competitions.get(i).getName());
             }
         }
@@ -104,7 +104,7 @@ public class MainMenuManager {
     }
 
     public void StartHistoryMenu() throws IOException {
-        GlobalMethods.clearConsole();
+        OutputHandler.clearConsole();
         new HistoryManager(dbService).printHistory();
     }
 }

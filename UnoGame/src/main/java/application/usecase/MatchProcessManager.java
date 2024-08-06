@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Random;
 
 import application.interfaces.IDataPersistence;
-import common.GlobalConstants;
-import common.GlobalMethods;
-import common.Messages;
 import domain.entities.Card;
+import domain.entities.CardColor;
+import domain.entities.CardNames;
 import domain.entities.Deck;
 import domain.entities.DeckBuilder;
 import domain.entities.FastMatch;
@@ -22,7 +21,8 @@ import domain.entities.PlayerWithCards;
 import domain.entities.Plus4Card;
 import domain.entities.SpecialCard;
 import domain.entities.WishCard;
-import presentation.input.InputHandler;
+import presentation.InputHandler;
+import presentation.OutputHandler;
 
 public class MatchProcessManager {
     private IDataPersistence dbService;
@@ -32,7 +32,7 @@ public class MatchProcessManager {
     private boolean moveToNextPlayer;
     private Card lastCard;
     private int nextPlayer;
-    private String wishedColor;
+    private CardColor wishedColor;
     private int cardsToDraw = 1;
     private boolean isClockwise = true;
     private Card playedCard;
@@ -61,7 +61,7 @@ public class MatchProcessManager {
         this.playerWithCards = match.getPlayersWithCardsList().get(nextPlayer);
 
         do {
-            GlobalMethods.clearConsole();
+            OutputHandler.clearConsole();
             lastCard = match.playedCards.get(match.playedCards.size() - 1);
             printNextPlayerMove();
 
@@ -73,7 +73,7 @@ public class MatchProcessManager {
                 moveToNextPlayer();
             } else {
                 if (!checkInput(numbers, playerWithCards.getPlayerCards())) {
-                    Messages.printInvalidInputMessage();
+                    OutputHandler.printInvalidInputMessage();
                     InputHandler.getInput();
                     continue;
                 }
@@ -112,20 +112,20 @@ public class MatchProcessManager {
         if (playedCard instanceof SpecialCard) {
             SpecialCard specialCard = (SpecialCard) playedCard;
             switch (specialCard.getSymbol()) {
-                case GlobalConstants.PLUS2:
+                case PLUS2:
                     if (cardsToDraw == 1) {
                         cardsToDraw = (2 * size);
                     } else {
                         cardsToDraw += (2 * size);
                     }
                     break;
-                case GlobalConstants.SKIP:
+                case SKIP:
                     if (size > 1) {
                         moveToNextPlayer();
                     }
                     moveToNextPlayer();
                     break;
-                case GlobalConstants.REVERSE:
+                case REVERSE:
                     if (size == 1) {
                         isClockwise = !isClockwise;
                     }
@@ -133,57 +133,55 @@ public class MatchProcessManager {
                         moveToNextPlayer();
                     }
                     break;
-                case GlobalConstants.ZERO:
+                case ZERO:
                     handleChangeCards();
                     break;
                 default:
                     break;
             }
         } else if (playedCard instanceof Plus4Card) {
-            Messages.printWishColorMessage();
+            OutputHandler.printWishColorMessage();
             int wishedColorNr = InputHandler.getNumberBetween(1, 4);
             switch (wishedColorNr) {
                 case 1:
-                    wishedColor = GlobalConstants.RED;
+                    wishedColor = CardColor.RED;
                     break;
                 case 2:
-                    wishedColor = GlobalConstants.GREEN;
+                    wishedColor = CardColor.GREEN;
                     break;
                 case 3:
-                    wishedColor = GlobalConstants.BLUE;
+                    wishedColor = CardColor.BLUE;
                     break;
                 case 4:
-                    wishedColor = GlobalConstants.YELLOW;
+                    wishedColor = CardColor.YELLOW;
                     break;
                 default:
                     break;
             }
-            wishedColor = GlobalConstants.COLORS.get(wishedColorNr - 1);
             if (cardsToDraw == 1) {
                 cardsToDraw = (4 * size);
             } else {
                 cardsToDraw += (4 * size);
             }
         } else if (playedCard instanceof WishCard) {
-            Messages.printWishColorMessage();
+            OutputHandler.printWishColorMessage();
             int wishedColorNr = InputHandler.getNumberBetween(1, 4);
             switch (wishedColorNr) {
                 case 1:
-                    wishedColor = GlobalConstants.RED;
+                    wishedColor = CardColor.RED;
                     break;
                 case 2:
-                    wishedColor = GlobalConstants.GREEN;
+                    wishedColor = CardColor.GREEN;
                     break;
                 case 3:
-                    wishedColor = GlobalConstants.BLUE;
+                    wishedColor = CardColor.BLUE;
                     break;
                 case 4:
-                    wishedColor = GlobalConstants.YELLOW;
+                    wishedColor = CardColor.YELLOW;
                     break;
                 default:
                     break;
             }
-            wishedColor = GlobalConstants.COLORS.get(wishedColorNr - 1);
         }
     }
 
@@ -256,7 +254,7 @@ public class MatchProcessManager {
         for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
             if (playerWithCards.getPlayerCards().size() == 0) {
                 match.setWinnerId(playerWithCards.getPlayer().getId());
-                Messages.printMatchOverMessage(playerWithCards.getPlayer().getPlayerName());
+                OutputHandler.printMatchOverMessage(playerWithCards.getPlayer().getPlayerName());
                 InputHandler.getInput();
                 return false;
             }
@@ -271,12 +269,16 @@ public class MatchProcessManager {
     }
 
     public void printNextPlayerMove() {
-        Messages.printLastCard();
+        OutputHandler.printLastCard();
         System.out.println(lastCard);
-        if (lastCard.getColor().equals(GlobalConstants.BLACK)) {
-            Messages.printWishedColor(wishedColor);
+        if (lastCard.getColor().equals(CardColor.BLACK.toString())) {
+            if(wishedColor == null) {
+                Random random = new Random();
+                wishedColor = CardColor.values()[random.nextInt(4)];
+            }
+            OutputHandler.printWishedColor(wishedColor.toString());
         }
-        Messages.printNextMove(playerWithCards.getPlayer().getPlayerName(), hasAlreadyPulled, cardsToDraw);
+        OutputHandler.printNextMove(playerWithCards.getPlayer().getPlayerName(), hasAlreadyPulled, cardsToDraw);
         printCardsOfNextPlayer(playerWithCards.getPlayerCards());
     }
 
@@ -311,7 +313,7 @@ public class MatchProcessManager {
         isSameColor = playedCard.getColor().equals(lastCard.getColor());
 
         // Black cards exception
-        if (isSameColor && playedCard.getColor().equals(GlobalConstants.BLACK)
+        if (isSameColor && playedCard.getColor().equals(CardColor.BLACK.toString())
                 && !blackOnblackAllowed) {
             return false;
         }
@@ -326,7 +328,7 @@ public class MatchProcessManager {
             // If the lastCard is not Plus4, then card is Plus2
             if (playedCard instanceof SpecialCard) {
                 SpecialCard playedSpecialCard = (SpecialCard) playedCard;
-                if (playedSpecialCard.getSymbol() == GlobalConstants.PLUS2) {
+                if (playedSpecialCard.getSymbol() == CardNames.PLUS2) {
                     return true;
                 }
             }
@@ -334,7 +336,7 @@ public class MatchProcessManager {
         }
 
         if (lastCard instanceof WishCard || lastCard instanceof Plus4Card) {
-            if (playedCard.getColor().equals(wishedColor)) {
+            if (playedCard.getColor().toString().equals(wishedColor.toString())) {
                 return true;
             }
             return false;

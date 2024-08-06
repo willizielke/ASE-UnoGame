@@ -1,10 +1,8 @@
 package domain.entities;
 
-import common.GlobalConstants;
-
 public class Plus4Card extends Card {
     public Plus4Card() {
-        super(40, GlobalConstants.BLACK);
+        super(40, CardColor.BLACK);
     }
 
     @Override
@@ -17,6 +15,6 @@ public class Plus4Card extends Card {
 
     @Override
     public String toString() {
-        return GlobalConstants.PLUS4CARD;
+        return CardNames.PLUS4.toString();
     }
 }

@@ -1,9 +1,12 @@
 package domain.entities;
 
 public class SpecialCard extends Card {
-    private String symbol;
+    private CardNames symbol;
 
-    public SpecialCard(String color, String symbol) {
+    public SpecialCard() {
+    }
+
+    public SpecialCard(CardColor color, CardNames symbol) {
         super(10, color);
         this.symbol = symbol;
     }
@@ -18,7 +21,7 @@ public class SpecialCard extends Card {
         return symbol != null ? symbol.equals(other.symbol) && getColor().equals(other.getColor()) : other.symbol == null;
     }
 
-    public String getSymbol() {
+    public CardNames getSymbol() {
         return symbol;
     }
 

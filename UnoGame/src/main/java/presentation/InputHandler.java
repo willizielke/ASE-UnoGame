@@ -1,12 +1,9 @@
-package presentation.input;
+package presentation;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import common.Messages;
-import common.ValidationHelper;
 
 public class InputHandler {
 
@@ -19,7 +16,7 @@ public class InputHandler {
     public static int getNumberBetween(int min, int max) {
         String input = getInput();
         while (!ValidationHelper.isNumberBetween(input, min, max)) {
-            Messages.printInvalidInputMessageNumberBetween(min, max);
+            OutputHandler.printInvalidInputMessageNumberBetween(min, max);
             input = getInput();
         }
         return Integer.parseInt(input);
@@ -30,12 +27,12 @@ public class InputHandler {
         do {
             name = getInput();
             if (name.isEmpty()) {
-                Messages.printInvalidInputMessage();
+                OutputHandler.printInvalidInputMessage();
                 continue;
             }
             name = ValidationHelper.stringIs15Characters(name);
             if (name.isEmpty()) {
-                Messages.printNameTooLongMessage();
+                OutputHandler.printNameTooLongMessage();
             }
         } while (name.isEmpty());
         return name;
@@ -48,7 +45,7 @@ public class InputHandler {
             list.clear();
             numbersWithComma = getInput();
             if (!ValidationHelper.stringIsCommaValid(numbersWithComma)) {
-                Messages.printInvalidInputMessage();
+                OutputHandler.printInvalidInputMessage();
                 numbersWithComma = "";
                 continue;
             }
@@ -56,14 +53,14 @@ public class InputHandler {
 
             for (String number : numbers) {
                 if (!ValidationHelper.isNumberBetween(number, 0, max)) {
-                    Messages.printInvalidInputMessageNumberBetween(1, max);
+                    OutputHandler.printInvalidInputMessageNumberBetween(1, max);
                     numbersWithComma = "";
                     continue;
                 }
                 list.add(Integer.parseInt(number));
             }
             if(list.size()>2){
-                Messages.printInvalidInputMessage();
+                OutputHandler.printInvalidInputMessage();
                 numbersWithComma = "";
             }
         } while (numbersWithComma.isEmpty());

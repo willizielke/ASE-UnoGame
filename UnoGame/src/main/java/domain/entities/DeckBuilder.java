@@ -3,8 +3,6 @@ package domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.GlobalConstants;
-
 public class DeckBuilder {
     private List<Card> cards;
 
@@ -16,12 +14,12 @@ public class DeckBuilder {
         this.cards = cards;
     }
 
-    public DeckBuilder addNumberCard(String color, int number) {
+    public DeckBuilder addNumberCard(CardColor color, int number) {
         cards.add(new NumberCard(color, number));
         return this;
     }
 
-    public DeckBuilder addSpecialCard(String color, String symbol) {
+    public DeckBuilder addSpecialCard(CardColor color, CardNames symbol) {
         cards.add(new SpecialCard(color, symbol));
         return this;
     }
@@ -42,19 +40,22 @@ public class DeckBuilder {
 
     public static Deck createDeck() {
         DeckBuilder deckBuilder = new DeckBuilder();
-        for (String color : GlobalConstants.COLORS) {
+        for (CardColor color : CardColor.values()) {
+            if(color == CardColor.BLACK) {
+                continue;
+            }
             for (int number = 1; number <= 9; number++) {
                 deckBuilder.addNumberCard(color, number);
                 deckBuilder.addNumberCard(color, number);
             }
-            deckBuilder.addSpecialCard(color, GlobalConstants.ZERO)
-                    .addSpecialCard(color, GlobalConstants.ZERO)
-                    .addSpecialCard(color, GlobalConstants.SKIP)
-                    .addSpecialCard(color, GlobalConstants.SKIP)
-                    .addSpecialCard(color, GlobalConstants.REVERSE)
-                    .addSpecialCard(color, GlobalConstants.REVERSE)
-                    .addSpecialCard(color, GlobalConstants.PLUS2)
-                    .addSpecialCard(color, GlobalConstants.PLUS2);
+            deckBuilder.addSpecialCard(color, CardNames.ZERO)
+                    .addSpecialCard(color, CardNames.ZERO)
+                    .addSpecialCard(color, CardNames.SKIP)
+                    .addSpecialCard(color, CardNames.SKIP)
+                    .addSpecialCard(color, CardNames.REVERSE)
+                    .addSpecialCard(color, CardNames.REVERSE)
+                    .addSpecialCard(color, CardNames.PLUS2)
+                    .addSpecialCard(color, CardNames.PLUS2);
         }
         deckBuilder.addWishCard()
                 .addWishCard()

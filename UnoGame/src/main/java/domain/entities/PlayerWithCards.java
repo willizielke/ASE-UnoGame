@@ -7,12 +7,7 @@ public class PlayerWithCards {
     private List<Card> playerCards;
     private int totalCardPoints;
 
-    public int getTotalCardPoints() {
-        return totalCardPoints;
-    }
-
-    public void setTotalCardPoints(int totalCardPoints) {
-        this.totalCardPoints = totalCardPoints;
+    public PlayerWithCards() {
     }
 
     public PlayerWithCards(Player player, List<Card> playerCards) {
@@ -44,4 +39,11 @@ public class PlayerWithCards {
         return playerCards.remove(index);
     }
 
+    public int getTotalCardPoints() {
+        return totalCardPoints;
+    }
+
+    public void setTotalCardPoints(int totalCardPoints) {
+        this.totalCardPoints = totalCardPoints;
+    }
 }

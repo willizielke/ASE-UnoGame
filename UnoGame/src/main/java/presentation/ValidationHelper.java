@@ -1,4 +1,4 @@
-package common;
+package presentation;
 
 public class ValidationHelper {
     public static boolean isNumberBetween(String str, int min, int max) {

@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import application.interfaces.IDataPersistence;
-import common.Messages;
 import domain.entities.Player;
 import domain.entities.PlayerHistoryStatistic;
-import presentation.input.InputHandler;
+import presentation.InputHandler;
+import presentation.OutputHandler;
 
 public class HistoryManager {
     private IDataPersistence dbService;
@@ -17,20 +17,8 @@ public class HistoryManager {
     }
 
     public void printHistory() throws IOException {
-        // get player list of the db and show statistics in a table
         List<Player> players = dbService.readAllPlayers();
-        // the tables should have these:
-        /*
-         * private int competitionCount;
-         * private int competitionWinCount;
-         * private int matchCount;
-         * private int matchWinCount;
-         * private int matchLoseCount;
-         * private int accumulatedPoints;
-         * private double pointsPerMatch;
-         */
 
-        // create the table
         int sortOption;
         do {
 
@@ -51,7 +39,7 @@ public class HistoryManager {
                         playerHistory.getPointsPerMatch());
             }
 
-            Messages.printSortOptions();
+            OutputHandler.printSortOptions();
             sortOption = InputHandler.getNumberBetween(1, 8);
             // sort the table after the selected header
             switch (sortOption) {

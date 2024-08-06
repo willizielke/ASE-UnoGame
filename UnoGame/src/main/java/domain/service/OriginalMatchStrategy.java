@@ -1,5 +1,11 @@
 package domain.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("original")
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OriginalMatchStrategy implements MatchStrategy {
     @Override
     public boolean isBlackOnBlackCardAllowed() {

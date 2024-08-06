@@ -6,6 +6,9 @@ public class PlayerCurrentCompetitionStatistic {
     private int accumulatedPoints;
     private int timesPointsReseted;
 
+    public PlayerCurrentCompetitionStatistic() {
+    }
+
     public PlayerCurrentCompetitionStatistic(Player player) {
         this.player = player;
         this.matchWinCount = 0;

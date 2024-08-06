@@ -4,15 +4,14 @@ import java.io.IOException;
 import java.util.List;
 
 import application.interfaces.IDataPersistence;
-import common.GlobalConstants;
-import common.Messages;
 import domain.entities.Competition;
 import domain.entities.Player;
 import domain.service.CompetitionRules;
 import domain.service.LocalMatchStrategy;
 import domain.service.MatchRules;
 import domain.service.OriginalMatchStrategy;
-import presentation.input.InputHandler;
+import presentation.InputHandler;
+import presentation.OutputHandler;
 
 public class CompetitionCreationManager {
     private Competition competition = new Competition();
@@ -23,9 +22,9 @@ public class CompetitionCreationManager {
     }
 
     public Competition createCompetition() throws IOException {
-        Messages.printGetNameMessage(GlobalConstants.COMPETITION);
-        competition.setName(InputHandler.getName(GlobalConstants.COMPETITION));
-        Messages.printGetPlayerCountMessage();
+        OutputHandler.printGetNameMessage(UseCaseConstants.COMPETITION);
+        competition.setName(InputHandler.getName(UseCaseConstants.COMPETITION));
+        OutputHandler.printGetPlayerCountMessage();
 
         int playerCount = InputHandler.getNumberBetween(1, 10);
 
@@ -33,11 +32,11 @@ public class CompetitionCreationManager {
             Player player = null;
             boolean playerIsAlreadyInTheCompetition = false;
             do {
-                Messages.printSlash(i, playerCount);
+                OutputHandler.printSlash(i, playerCount);
                 player = createOrLoadPlayer();
                 playerIsAlreadyInTheCompetition = playerIsAlreadyInTheCompetition(player, competition.getPlayers());
                 if (playerIsAlreadyInTheCompetition) {
-                    Messages.printInvalidInputMessagePlayerIsAlreadyInTheGame();
+                    OutputHandler.printInvalidInputMessagePlayerIsAlreadyInTheGame();
                 }
             } while (playerIsAlreadyInTheCompetition);
             competition.addPlayer(player);
@@ -45,18 +44,19 @@ public class CompetitionCreationManager {
         }
         competition.setCompetitionRules(getCompetitionRules());
         competition.setMatchRules(getMatchRules());
+        dbService.saveCompetition(competition);
         return competition;
     }
 
     public Player createPlayer() throws IOException {
-        Messages.printGetNameMessage(GlobalConstants.PLAYER);
-        String playerName = InputHandler.getName(GlobalConstants.PLAYER);
+        OutputHandler.printGetNameMessage(UseCaseConstants.PLAYER);
+        String playerName = InputHandler.getName(UseCaseConstants.PLAYER);
         Player player = dbService.saveAndReturnPlayer(playerName);
         return player;
     }
 
     public Player loadPlayer() throws IOException {
-        Messages.printLoadMessage(GlobalConstants.PLAYER);
+        OutputHandler.printLoadMessage(UseCaseConstants.PLAYER);
         List<Player> players = dbService.readAllPlayers();
         for (int i = 0; i < players.size(); i++) {
             System.out.println((i + 1) + ". " + players.get(i).getPlayerName());
@@ -67,7 +67,7 @@ public class CompetitionCreationManager {
     }
 
     public Player createOrLoadPlayer() throws IOException {
-        Messages.printCreateOrLoadMessage(GlobalConstants.PLAYER);
+        OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
         int option = InputHandler.getNumberBetween(1, 2);
         if (option == 1) {
             return createPlayer();
@@ -89,7 +89,7 @@ public class CompetitionCreationManager {
     }
 
     public MatchRules getMatchRules() {
-        Messages.printMatchRulesSelection();
+        OutputHandler.printMatchRulesSelection();
         int matchRulesOption = InputHandler.getNumberBetween(1, 2);
         if (matchRulesOption == 1) {
             return new MatchRules(new LocalMatchStrategy());
@@ -99,12 +99,12 @@ public class CompetitionCreationManager {
     }
 
     public CompetitionRules getCompetitionRules() {
-        Messages.printCompetitionRulesSelection();
+        OutputHandler.printCompetitionRulesSelection();
         int competitionRulesOption = InputHandler.getNumberBetween(1, 2);
         if (competitionRulesOption == 1) {
             CompetitionRules competitionRules = new CompetitionRules();
             competitionRules.setMatchWinsMode(true);
-            Messages.getMatchesToWin();
+            OutputHandler.getMatchesToWin();
             competitionRules.setMatchesToWin(InputHandler.getNumberBetween(1, 10));
             // not used:
             competitionRules.setLeastPointsMode(false);

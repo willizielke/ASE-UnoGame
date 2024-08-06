@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.interfaces.IDataPersistence;
-import common.GlobalConstants;
 import domain.entities.Competition;
 import domain.entities.Player;
 import domain.service.MatchStrategy;
@@ -17,7 +16,7 @@ import domain.service.MatchStrategy;
 public class FileDBService implements IDataPersistence {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final String filePath = GlobalConstants.DB_FILE_PATH;
+    private final String filePath = "C:\\Users\\wzielke\\Desktop\\Ase-UnoGame\\UnoGame\\src\\file_db\\";
     private final String filePathPlayer = filePath + "players.json";
     private final String filePathCompetition = filePath + "competitions.json";
     private final String filePathMatchStrategy = filePath + "matchStrategies.json";
