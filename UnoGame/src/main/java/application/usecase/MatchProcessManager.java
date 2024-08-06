@@ -228,9 +228,8 @@ public class MatchProcessManager {
 
     private void pullCardFromDeck(int cardsToDraw) {
         if (!deckHasCards(match.deck)) {
-            DeckBuilder deckBuilder = new DeckBuilder();
             Deck playedCardsAsDeck = new Deck(match.playedCards);
-            Deck newDeck = deckBuilder.shuffle(playedCardsAsDeck);
+            Deck newDeck = DeckBuilder.shuffle(playedCardsAsDeck);
             match.deck = newDeck;
         }
         for (int i = 0; i < cardsToDraw; i++) {
