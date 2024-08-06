@@ -17,8 +17,9 @@ public class NumberCard extends Card {
         if(!(obj instanceof NumberCard)){
             return false;
         }
-    
-        return number == ((NumberCard) obj).number;
+
+        NumberCard other = (NumberCard) obj;
+        return number == other.number && getColor().equals(other.getColor());
     }
 
     @Override

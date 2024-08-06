@@ -15,7 +15,7 @@ public class SpecialCard extends Card {
         }
         SpecialCard other = (SpecialCard) obj;
 
-        return symbol != null ? symbol.equals(other.symbol) : other.symbol == null;
+        return symbol != null ? symbol.equals(other.symbol) && getColor().equals(other.getColor()) : other.symbol == null;
     }
 
     public String getSymbol() {

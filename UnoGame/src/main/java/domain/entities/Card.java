@@ -18,20 +18,8 @@ public abstract class Card {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-
-        Card card = (Card) obj;
-
-        return points == card.points &&
-                (color != null ? color.equals(card.color) : card.color == null);
-    }
+    public abstract boolean equals(Object obj);
 
     @Override
-    public String toString() {
-        return "";
-    }
+    public abstract String toString();
 }
