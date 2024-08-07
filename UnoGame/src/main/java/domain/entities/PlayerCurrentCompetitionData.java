@@ -1,15 +1,15 @@
 package domain.entities;
 
-public class PlayerCurrentCompetitionStatistic {
+public class PlayerCurrentCompetitionData {
     private Player player;
     private int matchWinCount;
     private int accumulatedPoints;
     private int timesPointsReseted;
 
-    public PlayerCurrentCompetitionStatistic() {
+    public PlayerCurrentCompetitionData() {
     }
 
-    public PlayerCurrentCompetitionStatistic(Player player) {
+    public PlayerCurrentCompetitionData(Player player) {
         this.player = player;
         this.matchWinCount = 0;
         this.accumulatedPoints = 0;

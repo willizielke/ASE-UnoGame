@@ -11,7 +11,7 @@ public class Competition {
     private List<Player> players;
     private MatchRules matchRules;
     private CompetitionRules competitionRules;
-    private List<PlayerCurrentCompetitionStatistic> playerCurrentCompetitionStatistics;
+    private List<PlayerCurrentCompetitionData> playerCurrentCompetitionStatistics;
     private List<Match> matches;
     private int winnerId;
 
@@ -70,12 +70,12 @@ public class Competition {
         matches.add(match);
     }
 
-    public List<PlayerCurrentCompetitionStatistic> getPlayerCurrentCompetitionStatistics() {
+    public List<PlayerCurrentCompetitionData> getPlayerCurrentCompetitionStatistics() {
         return playerCurrentCompetitionStatistics;
     }
 
     public void addPlayerCurrentCompetitionStatistic(Player player) {
-        PlayerCurrentCompetitionStatistic playerCurrentCompetitionStatistic = new PlayerCurrentCompetitionStatistic(
+        PlayerCurrentCompetitionData playerCurrentCompetitionStatistic = new PlayerCurrentCompetitionData(
                 player);
         playerCurrentCompetitionStatistics.add(playerCurrentCompetitionStatistic);
     }

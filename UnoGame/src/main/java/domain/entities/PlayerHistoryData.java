@@ -1,6 +1,6 @@
 package domain.entities;
 
-public class PlayerHistoryStatistic {
+public class PlayerHistoryData {
     private int competitionCount;
     private int competitionWinCount;
     private int matchCount;
@@ -9,7 +9,7 @@ public class PlayerHistoryStatistic {
     private int accumulatedPoints;
     private double pointsPerMatch;
 
-    public PlayerHistoryStatistic() {
+    public PlayerHistoryData() {
         this.competitionCount = 0;
         this.competitionWinCount = 0;
         this.matchCount = 0;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import application.interfaces.IDataPersistence;
 import domain.entities.Player;
-import domain.entities.PlayerHistoryStatistic;
+import domain.entities.PlayerHistoryData;
 import presentation.InputHandler;
 import presentation.OutputHandler;
 
@@ -27,7 +27,7 @@ public class HistoryManager {
                     "Match Win Count", "Match Lose Count", "Accumulated Points", "Points Per Match");
 
             for (Player player : players) {
-                PlayerHistoryStatistic playerHistory = player.getPlayerStats();
+                PlayerHistoryData playerHistory = player.getPlayerStats();
                 System.out.printf("%-15s | %-18d | %-22d | %-11d | %-15d | %-16d | %-19d | %-15.2f%n",
                         player.getPlayerName(),
                         playerHistory.getCompetitionCount(),

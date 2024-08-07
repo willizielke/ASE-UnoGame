@@ -11,7 +11,7 @@ import domain.entities.Player;
 import domain.entities.PlayerWithCards;
 import presentation.InputHandler;
 import presentation.OutputHandler;
-import domain.entities.PlayerCurrentCompetitionStatistic;
+import domain.entities.PlayerCurrentCompetitionData;
 
 public class CompetitionProcessManager {
     private IDataPersistence dbService;
@@ -45,13 +45,13 @@ public class CompetitionProcessManager {
         boolean isLeastPointsMode = competition.getCompetitionRules().isLeastPointsMode();
         if (isLeastPointsMode) {
             int playersStillInGame = 0;
-            for (PlayerCurrentCompetitionStatistic playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
+            for (PlayerCurrentCompetitionData playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
                 if (playerStats.getAccumulatedPoints() < 101) {
                     playersStillInGame++;
                 }
             }
             if (playersStillInGame == 1) {
-                for (PlayerCurrentCompetitionStatistic playerStats : competition
+                for (PlayerCurrentCompetitionData playerStats : competition
                         .getPlayerCurrentCompetitionStatistics()) {
                     if (playerStats.getAccumulatedPoints() < 101) {
                         competition.setWinnerId(playerStats.getPlayer().getId());
@@ -65,7 +65,7 @@ public class CompetitionProcessManager {
                 }
             }
         } else {
-            for (PlayerCurrentCompetitionStatistic playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
+            for (PlayerCurrentCompetitionData playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
                 if (playerStats.getMatchWinCount() >= competition.getCompetitionRules().getMatchesToWin()) {
                     competition.setWinnerId(playerStats.getPlayer().getId());
                     for (Player player : competition.getPlayers()) {
@@ -90,15 +90,15 @@ public class CompetitionProcessManager {
     }
 
     public void setCompetitionStatistic(Match match) {
-        List<PlayerCurrentCompetitionStatistic> playerStats = competition.getPlayerCurrentCompetitionStatistics();
-        for (PlayerCurrentCompetitionStatistic playerStat : playerStats) {
+        List<PlayerCurrentCompetitionData> playerStats = competition.getPlayerCurrentCompetitionStatistics();
+        for (PlayerCurrentCompetitionData playerStat : playerStats) {
             for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
                 updatePlayerStatisticsIfMatched(playerStat, playerWithCards, match.getWinnerId());
             }
         }
     }
 
-    private void updatePlayerStatisticsIfMatched(PlayerCurrentCompetitionStatistic playerStat,
+    private void updatePlayerStatisticsIfMatched(PlayerCurrentCompetitionData playerStat,
             PlayerWithCards playerWithCards, long winnerId) {
         if (playerStat.getPlayer().getId() != playerWithCards.getPlayer().getId()) {
             return;
@@ -116,7 +116,7 @@ public class CompetitionProcessManager {
         applyRule101IfNeeded(playerStat);
     }
 
-    private void applyRule101IfNeeded(PlayerCurrentCompetitionStatistic playerStat) {
+    private void applyRule101IfNeeded(PlayerCurrentCompetitionData playerStat) {
         boolean isLeastPointsMode = competition.getCompetitionRules().isLeastPointsMode();
         boolean pointsEqual101 = playerStat.getAccumulatedPoints() == 101;
 
@@ -140,12 +140,12 @@ public class CompetitionProcessManager {
         boolean isLeastPointsMode = competition.getCompetitionRules().isLeastPointsMode();
         if (isLeastPointsMode) {
             OutputHandler.printTotalScores();
-            for (PlayerCurrentCompetitionStatistic playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
+            for (PlayerCurrentCompetitionData playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
                 System.out.println(playerStats.getPlayer().getPlayerName() + ": " + playerStats.getAccumulatedPoints());
             }
         } else {
             OutputHandler.printTotalWins(competition.getCompetitionRules().getMatchesToWin());
-            for (PlayerCurrentCompetitionStatistic playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
+            for (PlayerCurrentCompetitionData playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
                 System.out.println(playerStats.getPlayer().getPlayerName() + ": " + playerStats.getMatchWinCount());
             }
         }
@@ -154,7 +154,7 @@ public class CompetitionProcessManager {
 
     public List<Player> getPlayersInGame() {
         List<Player> playersInGame = new ArrayList<>();
-        for (PlayerCurrentCompetitionStatistic playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
+        for (PlayerCurrentCompetitionData playerStats : competition.getPlayerCurrentCompetitionStatistics()) {
             if (playerStats.getAccumulatedPoints() < 101) {
                 playersInGame.add(playerStats.getPlayer());
             }

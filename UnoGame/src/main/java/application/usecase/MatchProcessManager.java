@@ -16,7 +16,7 @@ import domain.entities.FastMatch;
 import domain.entities.Match;
 import domain.entities.NumberCard;
 import domain.entities.Player;
-import domain.entities.PlayerHistoryStatistic;
+import domain.entities.PlayerHistoryData;
 import domain.entities.PlayerWithCards;
 import domain.entities.Plus4Card;
 import domain.entities.SpecialCard;
@@ -390,7 +390,7 @@ public class MatchProcessManager {
             for (Card card : playerWithCards.getPlayerCards()) {
                 points += card.getPoints();
             }
-            PlayerHistoryStatistic playerHistoryStatistic = playerWithCards.getPlayer().getPlayerStats();
+            PlayerHistoryData playerHistoryStatistic = playerWithCards.getPlayer().getPlayerStats();
             playerHistoryStatistic.setAccumulatedPoints(playerHistoryStatistic.getAccumulatedPoints() + points);
             playerHistoryStatistic.setMatchCount(playerHistoryStatistic.getMatchCount() + 1);
             if (playerWithCards.getPlayerCards().size() == 0) {

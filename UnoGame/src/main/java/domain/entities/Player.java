@@ -2,7 +2,7 @@ package domain.entities;
 
 public class Player {
     private String playerName;
-    private PlayerHistoryStatistic playerStats;
+    private PlayerHistoryData playerStats;
     private int id;
 
     public Player() {
@@ -11,7 +11,7 @@ public class Player {
     public Player(String playerName, int id) {
         this.playerName = playerName;
         this.id = id;
-        this.playerStats = new PlayerHistoryStatistic();
+        this.playerStats = new PlayerHistoryData();
     }
 
     public int getId() {
@@ -22,11 +22,11 @@ public class Player {
         return playerName;
     }
 
-    public PlayerHistoryStatistic getPlayerStats() {
+    public PlayerHistoryData getPlayerStats() {
         return playerStats;
     }
 
-    public void setPlayerStats(PlayerHistoryStatistic playerStats) {
+    public void setPlayerStats(PlayerHistoryData playerStats) {
         this.playerStats = playerStats;
     }
 }
