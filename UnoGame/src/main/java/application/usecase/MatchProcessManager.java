@@ -121,44 +121,63 @@ public class MatchProcessManager {
 
     private void handleCardAction(int size) {
         if (playedCard instanceof SpecialCard) {
-            SpecialCard specialCard = (SpecialCard) playedCard;
-            switch (specialCard.getSymbol()) {
-                case PLUS2:
-                    if (cardsToDraw == 1) {
-                        cardsToDraw = (2 * size);
-                    } else {
-                        cardsToDraw += (2 * size);
-                    }
-                    break;
-                case SKIP:
-                    if (size > 1) {
-                        moveToNextPlayer();
-                    }
-                    moveToNextPlayer();
-                    break;
-                case REVERSE:
-                    if (size == 1) {
-                        isClockwise = !isClockwise;
-                    }
-                    if (match.getMatchRules().getStrategy().reverseIsSkipIfOnlyTwoPlayers()) {
-                        moveToNextPlayer();
-                    }
-                    break;
-                case ZERO:
-                    handleChangeCards();
-                    break;
-                default:
-                    break;
-            }
+            handleSpecialCardAction((SpecialCard) playedCard, size);
         } else if (playedCard instanceof Plus4Card) {
-            wishedColor = getWishedColor();
-            if (cardsToDraw == 1) {
-                cardsToDraw = (4 * size);
-            } else {
-                cardsToDraw += (4 * size);
-            }
+            handlePlus4CardAction(size);
         } else if (playedCard instanceof WishCard) {
-            wishedColor = getWishedColor();
+            handleWishCardAction();
+        }
+    }
+
+    private void handleSpecialCardAction(SpecialCard specialCard, int size) {
+        switch (specialCard.getSymbol()) {
+            case PLUS2:
+                updateCardsToDraw(2 * size);
+                break;
+            case SKIP:
+                handleSkipAction(size);
+                break;
+            case REVERSE:
+                handleReverseAction(size);
+                break;
+            case ZERO:
+                handleChangeCards();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void handlePlus4CardAction(int size) {
+        wishedColor = getWishedColor();
+        updateCardsToDraw(4 * size);
+    }
+
+    private void handleWishCardAction() {
+        wishedColor = getWishedColor();
+    }
+
+    private void updateCardsToDraw(int newCardsToDraw) {
+        if (cardsToDraw == 1) {
+            cardsToDraw = newCardsToDraw;
+        } else {
+            cardsToDraw += newCardsToDraw;
+        }
+    }
+
+    private void handleSkipAction(int size) {
+        if (size > 1 && match.getPlayersWithCardsList().size() > 2) {
+            moveToNextPlayer();
+        }
+        moveToNextPlayer();
+    }
+
+    private void handleReverseAction(int size) {
+        if (size == 1) {
+            isClockwise = !isClockwise;
+        }
+        if (match.getMatchRules().getStrategy().reverseIsSkipIfOnlyTwoPlayers()) {
+            moveToNextPlayer();
         }
     }
 
