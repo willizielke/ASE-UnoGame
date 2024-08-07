@@ -151,48 +151,31 @@ public class MatchProcessManager {
                     break;
             }
         } else if (playedCard instanceof Plus4Card) {
-            OutputHandler.printWishColorMessage();
-            int wishedColorNr = InputHandler.getNumberBetween(1, 4);
-            switch (wishedColorNr) {
-                case 1:
-                    wishedColor = CardColor.RED;
-                    break;
-                case 2:
-                    wishedColor = CardColor.GREEN;
-                    break;
-                case 3:
-                    wishedColor = CardColor.BLUE;
-                    break;
-                case 4:
-                    wishedColor = CardColor.YELLOW;
-                    break;
-                default:
-                    break;
-            }
+            wishedColor = getWishedColor();
             if (cardsToDraw == 1) {
                 cardsToDraw = (4 * size);
             } else {
                 cardsToDraw += (4 * size);
             }
         } else if (playedCard instanceof WishCard) {
-            OutputHandler.printWishColorMessage();
-            int wishedColorNr = InputHandler.getNumberBetween(1, 4);
-            switch (wishedColorNr) {
-                case 1:
-                    wishedColor = CardColor.RED;
-                    break;
-                case 2:
-                    wishedColor = CardColor.GREEN;
-                    break;
-                case 3:
-                    wishedColor = CardColor.BLUE;
-                    break;
-                case 4:
-                    wishedColor = CardColor.YELLOW;
-                    break;
-                default:
-                    break;
-            }
+            wishedColor = getWishedColor();
+        }
+    }
+
+    private CardColor getWishedColor() {
+        OutputHandler.printWishColorMessage();
+        int wishedColorNr = InputHandler.getNumberBetween(1, 4);
+        switch (wishedColorNr) {
+            case 1:
+                return CardColor.RED;
+            case 2:
+                return CardColor.GREEN;
+            case 3:
+                return CardColor.BLUE;
+            case 4:
+                return CardColor.YELLOW;
+            default:
+                return null;
         }
     }
 
@@ -219,22 +202,18 @@ public class MatchProcessManager {
     }
 
     private void moveToNextPlayer() {
-        if (isClockwise) {
-            this.nextPlayer = (nextPlayer + 1) % match.getPlayersWithCardsList().size();
-        } else {
-            this.nextPlayer = (nextPlayer - 1 + match.getPlayersWithCardsList().size())
-                    % match.getPlayersWithCardsList().size();
-        }
-        this.moveToNextPlayer = true;
+        movePlayer(isClockwise);
     }
 
     private void moveToLastPlayer() {
-        if (isClockwise) {
-            this.nextPlayer = (nextPlayer - 1 + match.getPlayersWithCardsList().size())
-                    % match.getPlayersWithCardsList().size();
-        } else {
-            this.nextPlayer = (nextPlayer + 1) % match.getPlayersWithCardsList().size();
-        }
+        movePlayer(!isClockwise);
+    }
+
+    private void movePlayer(boolean clockwise) {
+        int direction = clockwise ? 1 : -1;
+        this.nextPlayer = (nextPlayer + direction + match.getPlayersWithCardsList().size())
+                % match.getPlayersWithCardsList().size();
+        this.moveToNextPlayer = true;
     }
 
     private void pullCardFromDeck(int cardsToDraw) {
