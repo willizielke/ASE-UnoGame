@@ -1,5 +1,7 @@
 package presentation;
 
+import java.util.List;
+
 public class OutputHandler {
     public static final void printMainMenuSelection() {
         System.out.println(
@@ -93,8 +95,8 @@ public class OutputHandler {
         System.out.println("Total wins (matches to win " + matchesToWin + "):");
     }
 
-    public static final void printLastCard() {
-        System.out.println("Last card: ");
+    public static final void printLastCard(String card) {
+        System.out.println("Last card: " + card);
     }
 
     public static final void printWishedColor(String wishedColor) {
@@ -106,9 +108,24 @@ public class OutputHandler {
                 "\nPlease enter the number of one of the listed options. Sort by:\n1 - Competition Count\n2 - Competition Win Count\n3 - Match Count\n4 - Match Win Count\n5 - Match Lose Count\n6 - Accumulated Points\n7 - Points Per Match\n8 - Back");
     }
 
-    // printWinnerAndEndCompetition
     public static final void printWinnerOfCompetition(String winnerName) {
         System.out.println("The winner of the competition is: " + winnerName);
+    }
+
+    public static final void printPlayerPoints(int points) {
+        System.out.println("Your current Points: " + points);
+    }
+
+    // printCardsCountOfOthers
+    public static final void printCardsCountOfOthers(List<Integer> cardsCount) {
+        System.out.print("Cardscount of the other player(s):");
+        for (int i = 0; i < cardsCount.size(); i++) {
+            if (i != 0) {
+                System.out.print(", ");
+            }
+            System.out.print(cardsCount.get(i));
+        }
+        System.out.println();
     }
 
     // invalid Messages

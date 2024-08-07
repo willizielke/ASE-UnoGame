@@ -100,24 +100,12 @@ public class CompetitionCreationManager {
 
     public CompetitionRules getCompetitionRules() {
         OutputHandler.printCompetitionRulesSelection();
+        OutputHandler.printCompetitionRulesSelection();
         int competitionRulesOption = InputHandler.getNumberBetween(1, 2);
-        if (competitionRulesOption == 1) {
-            CompetitionRules competitionRules = new CompetitionRules();
-            competitionRules.setMatchWinsMode(true);
-            OutputHandler.getMatchesToWin();
-            competitionRules.setMatchesToWin(InputHandler.getNumberBetween(1, 10));
-            // not used:
-            competitionRules.setLeastPointsMode(false);
-            competitionRules.setMaxPoints(0);
-            return competitionRules;
-        } else {
-            CompetitionRules competitionRules = new CompetitionRules();
-            competitionRules.setLeastPointsMode(true);
-            competitionRules.setMaxPoints(101);
-            // not used:
-            competitionRules.setMatchWinsMode(false);
-            competitionRules.setMatchesToWin(0);
-            return competitionRules;
-        }
+
+        CompetitionRules competitionRules = new CompetitionRules();
+        competitionRules.setCompetitionMode(competitionRulesOption);
+
+        return competitionRules;
     }
 }

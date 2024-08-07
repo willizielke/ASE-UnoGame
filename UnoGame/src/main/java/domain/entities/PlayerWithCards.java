@@ -13,6 +13,7 @@ public class PlayerWithCards {
     public PlayerWithCards(Player player, List<Card> playerCards) {
         this.player = player;
         this.playerCards = playerCards;
+        this.totalCardPoints = 0;
     }
 
     public void addCard(Card card) {

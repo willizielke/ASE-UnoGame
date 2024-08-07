@@ -21,6 +21,9 @@ import domain.entities.PlayerWithCards;
 import domain.entities.Plus4Card;
 import domain.entities.SpecialCard;
 import domain.entities.WishCard;
+import domain.service.Addition;
+import domain.service.Calculator;
+import domain.service.Subtraction;
 import presentation.InputHandler;
 import presentation.OutputHandler;
 
@@ -36,6 +39,7 @@ public class MatchProcessManager {
     private int cardsToDraw = 1;
     private boolean isClockwise = true;
     private Card playedCard;
+    private Calculator calculator = new Calculator();
 
     public MatchProcessManager(IDataPersistence dbService) {
         this.dbService = dbService;
@@ -46,6 +50,9 @@ public class MatchProcessManager {
         this.nextPlayer = whoStarts(match.getPlayersWithCardsList().size());
         match.playedCards.add(match.deck.remove(0));
         this.lastCard = match.playedCards.get(match.playedCards.size() - 1);
+        for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
+            playerWithCards.setTotalCardPoints(countPoints(playerWithCards));
+        }
 
         while (matchIsNotOver(match)) {
             playTurn();
@@ -102,7 +109,11 @@ public class MatchProcessManager {
     private void handleCardPlay(List<Integer> numbers) {
         numbers.sort(Collections.reverseOrder()); // Sort the numbers in descending order
         for (int index : numbers) {
-            match.playedCards.add(playerWithCards.removeCard(index - 1));
+            Card card = playerWithCards.removeCard(index - 1);
+            Subtraction subtraction = new Subtraction(playerWithCards.getTotalCardPoints(), card.getPoints());
+            calculator.calculate(subtraction);
+            playerWithCards.setTotalCardPoints(subtraction.getResult());
+            match.playedCards.add(card);
         }
         handleCardAction(numbers.size());
         moveToNextPlayer();
@@ -233,7 +244,11 @@ public class MatchProcessManager {
             match.deck = newDeck;
         }
         for (int i = 0; i < cardsToDraw; i++) {
-            playerWithCards.addCard(match.deck.remove(0));
+            Card card = match.deck.remove(0);
+            playerWithCards.addCard(card);
+            Addition addition = new Addition(playerWithCards.getTotalCardPoints(), card.getPoints());
+            calculator.calculate(addition);
+            playerWithCards.setTotalCardPoints(addition.getResult());
         }
         this.cardsToDraw = 1;
         this.hasAlreadyPulled = true;
@@ -268,17 +283,29 @@ public class MatchProcessManager {
     }
 
     public void printNextPlayerMove() {
-        OutputHandler.printLastCard();
-        System.out.println(lastCard);
+        printDetailsForPlayer();
+        OutputHandler.printNextMove(playerWithCards.getPlayer().getPlayerName(), hasAlreadyPulled, cardsToDraw);
+        printCardsOfNextPlayer(playerWithCards.getPlayerCards());
+    }
+
+    public void printDetailsForPlayer() {
+        OutputHandler.printLastCard(lastCard.toString());
         if (lastCard.getColor().equals(CardColor.BLACK.toString())) {
-            if(wishedColor == null) {
+            if (wishedColor == null) {
                 Random random = new Random();
                 wishedColor = CardColor.values()[random.nextInt(4)];
             }
             OutputHandler.printWishedColor(wishedColor.toString());
         }
-        OutputHandler.printNextMove(playerWithCards.getPlayer().getPlayerName(), hasAlreadyPulled, cardsToDraw);
-        printCardsOfNextPlayer(playerWithCards.getPlayerCards());
+        OutputHandler.printPlayerPoints(playerWithCards.getTotalCardPoints());
+        List<Integer> cardsCountOfOthers = new ArrayList<>();
+        for (int i = 0; i < match.getPlayersWithCardsList().size(); i++) {
+            if (i == nextPlayer) {
+                continue;
+            }
+            cardsCountOfOthers.add(match.getPlayersWithCardsList().get(i).getPlayerCards().size());
+        }
+        OutputHandler.printCardsCountOfOthers(cardsCountOfOthers);
     }
 
     public boolean checkInput(List<Integer> numbers, List<Card> playerCards) {
@@ -386,12 +413,9 @@ public class MatchProcessManager {
 
     public void setPlayerStatistics() throws IOException {
         for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
-            int points = 0;
-            for (Card card : playerWithCards.getPlayerCards()) {
-                points += card.getPoints();
-            }
             PlayerHistoryData playerHistoryStatistic = playerWithCards.getPlayer().getPlayerStats();
-            playerHistoryStatistic.setAccumulatedPoints(playerHistoryStatistic.getAccumulatedPoints() + points);
+            playerHistoryStatistic
+                    .setAccumulatedPoints(playerHistoryStatistic.getAccumulatedPoints() + countPoints(playerWithCards));
             playerHistoryStatistic.setMatchCount(playerHistoryStatistic.getMatchCount() + 1);
             if (playerWithCards.getPlayerCards().size() == 0) {
                 playerHistoryStatistic.setMatchWinCount(playerHistoryStatistic.getMatchWinCount() + 1);
@@ -402,8 +426,17 @@ public class MatchProcessManager {
                     / playerHistoryStatistic.getMatchCount());
             Player updatedPlayer = playerWithCards.getPlayer();
             updatedPlayer.setPlayerStats(playerHistoryStatistic);
-            playerWithCards.setTotalCardPoints(points);
             dbService.updatePlayer(updatedPlayer);
         }
+    }
+
+    public int countPoints(PlayerWithCards playerWithCards) {
+        int points = 0;
+        for (Card card : playerWithCards.getPlayerCards()) {
+            Addition addition = new Addition(points, card.getPoints());
+            calculator.calculate(addition);
+            points = addition.getResult();
+        }
+        return points;
     }
 }
