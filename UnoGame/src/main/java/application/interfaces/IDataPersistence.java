@@ -10,7 +10,6 @@ import domain.service.MatchStrategy;
 public interface IDataPersistence {
     boolean checkIfNameAlreadyExistsPlayer(String name) throws IOException;
     void savePlayer(String playerName) throws IOException;
-    Player saveAndReturnPlayer(String playerName) throws IOException;
     List<Player> readAllPlayers() throws IOException;
     void updatePlayer(Player updatedPlayer) throws IOException;
     Player loadPlayer(int id) throws IOException;

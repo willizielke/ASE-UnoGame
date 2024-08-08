@@ -79,14 +79,16 @@ public class MatchCreationManager {
         match.setDeck(deck);
         match.setMatchRules(matchRules);
         match.setPlayedCards(new ArrayList<Card>());
-        
+
         return match;
     }
 
     public Player createPlayer() throws IOException {
         OutputHandler.printGetNameMessage(UseCaseConstants.PLAYER);
         String playerName = InputHandler.getName(UseCaseConstants.PLAYER);
-        Player player = dbService.saveAndReturnPlayer(playerName);
+        int id = dbService.readAllPlayers().size();
+        Player player = new Player(playerName, id);
+        dbService.savePlayer(playerName);
         return player;
     }
 
