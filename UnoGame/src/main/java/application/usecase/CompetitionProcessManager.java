@@ -1,27 +1,29 @@
 package application.usecase;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.interfaces.IDataPersistence;
 import domain.entities.Competition;
 import domain.entities.Match;
 import domain.entities.Player;
 import domain.entities.PlayerWithCards;
+import domain.repositories.CompetitionRepository;
+import domain.repositories.PlayerRepository;
 import presentation.InputHandler;
 import presentation.OutputHandler;
 import domain.entities.PlayerCurrentCompetitionData;
 
 public class CompetitionProcessManager {
-    private IDataPersistence dbService;
     private Competition competition;
+    private PlayerRepository playerRepository;
+    private CompetitionRepository competitionRepository;
 
-    public CompetitionProcessManager(IDataPersistence dbService) {
-        this.dbService = dbService;
+    public CompetitionProcessManager(PlayerRepository playerRepository, CompetitionRepository competitionRepository) {
+        this.playerRepository = playerRepository;
+        this.competitionRepository = competitionRepository;
     }
 
-    public void startCompetition(Competition competition) throws IOException {
+    public void startCompetition(Competition competition) throws Exception {
         this.competition = competition;
         while (competitionIsNotOver()) {
             OutputHandler.clearConsole();
@@ -31,7 +33,7 @@ public class CompetitionProcessManager {
                 Match match = playMatch();
                 competition.getMatches().add(match);
                 setCompetitionStatistic(match);
-                dbService.updateCompetition(competition);
+                competitionRepository.updateCompetition(competition);
             } else if (selection == 2) {
                 printAllMatchScores();
             } else {
@@ -80,11 +82,11 @@ public class CompetitionProcessManager {
         return competition.getWinnerId() == -1;
     }
 
-    public Match playMatch() throws IOException {
-        MatchCreationManager matchCreationManager = new MatchCreationManager(dbService);
+    public Match playMatch() throws Exception {
+        MatchCreationManager matchCreationManager = new MatchCreationManager(playerRepository);
         Match match = matchCreationManager.createCompetitionMatch(getPlayersInGame(),
                 competition.getMatchRules());
-        MatchProcessManager matchProcessManager = new MatchProcessManager(dbService);
+        MatchProcessManager matchProcessManager = new MatchProcessManager(playerRepository);
         matchProcessManager.startMatch(match);
         return match;
     }
@@ -162,14 +164,14 @@ public class CompetitionProcessManager {
         return playersInGame;
     }
 
-    public void setCompetitionStatisticFinal() throws IOException {
+    public void setCompetitionStatisticFinal() throws Exception {
         for (Player player : competition.getPlayers()) {
             player.getPlayerStats().setCompetitionWinCount(player.getPlayerStats().getCompetitionCount() + 1);
             if (player.getId() == competition.getWinnerId()) {
                 player.getPlayerStats().setCompetitionWinCount(player.getPlayerStats().getCompetitionWinCount() + 1);
             }
-            dbService.updatePlayer(player);
+            playerRepository.updatePlayer(player);
         }
-        dbService.updateCompetition(competition);
+        competitionRepository.updateCompetition(competition);
     }
 }

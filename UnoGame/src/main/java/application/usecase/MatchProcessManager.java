@@ -1,12 +1,10 @@
 package application.usecase;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import application.interfaces.IDataPersistence;
 import domain.entities.Card;
 import domain.entities.CardColor;
 import domain.entities.CardNames;
@@ -21,6 +19,7 @@ import domain.entities.PlayerWithCards;
 import domain.entities.Plus4Card;
 import domain.entities.SpecialCard;
 import domain.entities.WishCard;
+import domain.repositories.PlayerRepository;
 import domain.service.Addition;
 import domain.service.Calculator;
 import domain.service.Subtraction;
@@ -28,7 +27,7 @@ import presentation.InputHandler;
 import presentation.OutputHandler;
 
 public class MatchProcessManager {
-    private IDataPersistence dbService;
+    private PlayerRepository playerRepository;
     private Match match;
     private PlayerWithCards playerWithCards;
     private boolean hasAlreadyPulled;
@@ -41,11 +40,11 @@ public class MatchProcessManager {
     private Card playedCard;
     private Calculator calculator = new Calculator();
 
-    public MatchProcessManager(IDataPersistence dbService) {
-        this.dbService = dbService;
+    public MatchProcessManager(PlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
     }
 
-    public void startMatch(Match match) throws IOException {
+    public void startMatch(Match match) throws Exception {
         this.match = match;
         this.nextPlayer = whoStarts(match.getPlayersWithCardsList().size());
         match.playedCards.add(match.deck.remove(0));
@@ -409,7 +408,7 @@ public class MatchProcessManager {
         }
     }
 
-    public void setPlayerStatistics() throws IOException {
+    public void setPlayerStatistics() throws Exception {
         for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
             PlayerHistoryData playerHistoryStatistic = playerWithCards.getPlayer().getPlayerStats();
             playerHistoryStatistic
@@ -424,7 +423,7 @@ public class MatchProcessManager {
                     / playerHistoryStatistic.getMatchCount());
             Player updatedPlayer = playerWithCards.getPlayer();
             updatedPlayer.setPlayerStats(playerHistoryStatistic);
-            dbService.updatePlayer(updatedPlayer);
+            playerRepository.updatePlayer(updatedPlayer);
         }
     }
 

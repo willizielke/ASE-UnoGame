@@ -3,21 +3,25 @@ package application.usecase;
 import java.io.IOException;
 import java.util.List;
 
-import application.interfaces.IDataPersistence;
 import domain.entities.Competition;
 import domain.entities.Match;
+import domain.repositories.CompetitionRepository;
+import domain.repositories.MatchStrategyRepository;
+import domain.repositories.PlayerRepository;
 import presentation.InputHandler;
 import presentation.OutputHandler;
 
 public class MainMenuManager {
+    private PlayerRepository playerRepository;
+    private CompetitionRepository competitionRepository;
 
-    private IDataPersistence dbService;
-
-    public MainMenuManager(IDataPersistence dbService) {
-        this.dbService = dbService;
+    public MainMenuManager(PlayerRepository playerRepository, CompetitionRepository competitionRepository,
+            MatchStrategyRepository matchStrategyRepository) {
+        this.playerRepository = playerRepository;
+        this.competitionRepository = competitionRepository;
     }
 
-    public void StartApplication() throws IOException {
+    public void StartApplication() throws Exception {
         int mainOptionNr = 0;
         while (mainOptionNr != 5) {
             OutputHandler.clearConsole();
@@ -47,12 +51,12 @@ public class MainMenuManager {
         }
     }
 
-    public void StartMatchMenu() throws IOException {
+    public void StartMatchMenu() throws Exception {
         OutputHandler.clearConsole();
         OutputHandler.printMatchViewSelection();
         int matchOptionNr = InputHandler.getNumberBetween(1, 3);
-        MatchCreationManager matchCreationManager = new MatchCreationManager(dbService);
-        MatchProcessManager matchProcessManager = new MatchProcessManager(dbService);
+        MatchCreationManager matchCreationManager = new MatchCreationManager(playerRepository);
+        MatchProcessManager matchProcessManager = new MatchProcessManager(playerRepository);
         if (matchOptionNr == 1) {
             Match match = matchCreationManager.createFastMatch();
             matchProcessManager.startMatch(match);
@@ -64,30 +68,30 @@ public class MainMenuManager {
         }
     }
 
-    public void StartCompetitionMenu() throws IOException {
+    public void StartCompetitionMenu() throws Exception {
         OutputHandler.clearConsole();
         OutputHandler.printCompetitionViewSelection();
         int competitionOptionNr = InputHandler.getNumberBetween(1, 3);
         Competition competition = new Competition();
         if (competitionOptionNr == 1) {
-            competition = new CompetitionCreationManager(dbService).createCompetition();
+            competition = new CompetitionCreationManager(playerRepository, competitionRepository).createCompetition();
             if (competition == null) {
                 return;
             }
-            new CompetitionProcessManager(dbService).startCompetition(competition);
+            new CompetitionProcessManager(playerRepository, competitionRepository).startCompetition(competition);
         } else if (competitionOptionNr == 2) {
             competition = loadCompetition();
             if (competition == null) {
                 return;
             }
-            new CompetitionProcessManager(dbService).startCompetition(competition);
+            new CompetitionProcessManager(playerRepository, competitionRepository).startCompetition(competition);
         } else if (competitionOptionNr == 3) {
             return;
         }
     }
 
     public Competition loadCompetition() throws IOException {
-        List<Competition> competitions = dbService.readAllCompetitions();
+        List<Competition> competitions = competitionRepository.readAllCompetitions();
         if (competitions.size() == 0) {
             OutputHandler.printNotInDBMessage(UseCaseConstants.COMPETITION);
             return null;
@@ -99,12 +103,12 @@ public class MainMenuManager {
             }
         }
         int optionNr = InputHandler.getNumberBetween(1, competitions.size());
-        Competition competition = dbService.loadCompetition(competitions.get(optionNr - 1).getName());
+        Competition competition = competitionRepository.loadCompetition(competitions.get(optionNr - 1).getName());
         return competition;
     }
 
-    public void StartHistoryMenu() throws IOException {
+    public void StartHistoryMenu() throws Exception {
         OutputHandler.clearConsole();
-        new HistoryManager(dbService).printHistory();
+        new HistoryManager(playerRepository).printHistory();
     }
 }

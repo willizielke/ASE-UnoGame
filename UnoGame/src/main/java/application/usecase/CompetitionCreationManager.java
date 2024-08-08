@@ -1,11 +1,11 @@
 package application.usecase;
 
-import java.io.IOException;
 import java.util.List;
 
-import application.interfaces.IDataPersistence;
 import domain.entities.Competition;
 import domain.entities.Player;
+import domain.repositories.CompetitionRepository;
+import domain.repositories.PlayerRepository;
 import domain.service.CompetitionRules;
 import domain.service.LocalMatchStrategy;
 import domain.service.MatchRules;
@@ -15,13 +15,15 @@ import presentation.OutputHandler;
 
 public class CompetitionCreationManager {
     private Competition competition = new Competition();
-    private IDataPersistence dbService;
+    private PlayerRepository playerRepository;
+    private CompetitionRepository competitionRepository;
 
-    public CompetitionCreationManager(IDataPersistence dbService) {
-        this.dbService = dbService;
+    public CompetitionCreationManager(PlayerRepository playerRepository, CompetitionRepository competitionRepository) {
+        this.playerRepository = playerRepository;
+        this.competitionRepository = competitionRepository;
     }
 
-    public Competition createCompetition() throws IOException {
+    public Competition createCompetition() throws Exception {
         OutputHandler.printGetNameMessage(UseCaseConstants.COMPETITION);
         competition.setName(InputHandler.getName(UseCaseConstants.COMPETITION));
         OutputHandler.printGetPlayerCountMessage();
@@ -44,31 +46,31 @@ public class CompetitionCreationManager {
         }
         competition.setCompetitionRules(getCompetitionRules());
         competition.setMatchRules(getMatchRules());
-        dbService.saveCompetition(competition);
+        competitionRepository.saveCompetition(competition);
         return competition;
     }
 
-    public Player createPlayer() throws IOException {
+    public Player createPlayer() throws Exception {
         OutputHandler.printGetNameMessage(UseCaseConstants.PLAYER);
         String playerName = InputHandler.getName(UseCaseConstants.PLAYER);
-        int id = dbService.readAllPlayers().size();
+        int id = playerRepository.readAllPlayers().size();
         Player player = new Player(playerName, id);
-        dbService.savePlayer(playerName);
+        playerRepository.savePlayer(player);
         return player;
     }
 
-    public Player loadPlayer() throws IOException {
+    public Player loadPlayer() throws Exception {
         OutputHandler.printLoadMessage(UseCaseConstants.PLAYER);
-        List<Player> players = dbService.readAllPlayers();
+        List<Player> players = playerRepository.readAllPlayers();
         for (int i = 0; i < players.size(); i++) {
             System.out.println((i + 1) + ". " + players.get(i).getPlayerName());
         }
         int optionNr = InputHandler.getNumberBetween(1, players.size());
-        Player player = dbService.loadPlayer(players.get(optionNr - 1).getId());
+        Player player = playerRepository.loadPlayer(players.get(optionNr - 1).getId());
         return player;
     }
 
-    public Player createOrLoadPlayer() throws IOException {
+    public Player createOrLoadPlayer() throws Exception {
         OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
         int option = InputHandler.getNumberBetween(1, 2);
         if (option == 1) {
@@ -79,7 +81,7 @@ public class CompetitionCreationManager {
     }
 
     public boolean playerIsAlreadyInTheCompetition(Player player, List<Player> playersList) {
-        if(playersList.isEmpty()) {
+        if (playersList.isEmpty()) {
             return false;
         }
         for (Player p : playersList) {

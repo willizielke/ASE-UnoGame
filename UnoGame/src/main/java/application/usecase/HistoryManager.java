@@ -1,23 +1,22 @@
 package application.usecase;
 
-import java.io.IOException;
 import java.util.List;
 
-import application.interfaces.IDataPersistence;
 import domain.entities.Player;
 import domain.entities.PlayerHistoryData;
+import domain.repositories.PlayerRepository;
 import presentation.InputHandler;
 import presentation.OutputHandler;
 
 public class HistoryManager {
-    private IDataPersistence dbService;
+    private PlayerRepository playerRepository;
 
-    public HistoryManager(IDataPersistence dbService) {
-        this.dbService = dbService;
+    public HistoryManager(PlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
     }
 
-    public void printHistory() throws IOException {
-        List<Player> players = dbService.readAllPlayers();
+    public void printHistory() throws Exception {
+        List<Player> players = playerRepository.readAllPlayers();
 
         int sortOption;
         do {
