@@ -65,14 +65,4 @@ public class CompetitionRepository {
         }
         objectMapper.writeValue(new File(filePathCompetition), competitions);
     }
-
-    public boolean checkIfNameAlreadyExistsCompetition(String name) throws IOException {
-        List<Competition> competitions = readAllCompetitions();
-        for (Competition competition : competitions) {
-            if (competition.getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
