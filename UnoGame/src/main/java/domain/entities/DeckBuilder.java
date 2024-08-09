@@ -3,6 +3,12 @@ package domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.valueobjects.Card;
+import domain.valueobjects.NumberCard;
+import domain.valueobjects.Plus4Card;
+import domain.valueobjects.SpecialCard;
+import domain.valueobjects.WishCard;
+
 public class DeckBuilder {
     private List<Card> cards;
 

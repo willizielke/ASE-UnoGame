@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.service.MatchRules;
+import domain.valueobjects.Card;
 
 public class Match {
     private List<PlayerWithCards> playersWithCardsList;

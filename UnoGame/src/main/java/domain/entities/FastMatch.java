@@ -6,6 +6,7 @@ import java.util.List;
 import application.usecase.UseCaseConstants;
 import domain.service.MatchRules;
 import domain.service.OriginalMatchStrategy;
+import domain.valueobjects.Card;
 
 public class FastMatch extends Match {
     public FastMatch(int playerCount) {

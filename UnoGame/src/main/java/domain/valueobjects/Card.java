@@ -1,7 +1,9 @@
-package domain.entities;
+package domain.valueobjects;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import domain.entities.CardColor;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -11,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = WishCard.class, name = "wishCard")
 })
 public abstract class Card {
-    private int points;
-    private String color;
+    private final int points;
+    private final String color;
 
     public int getPoints() {
         return points;
@@ -27,12 +29,14 @@ public abstract class Card {
         this.color = color.toString();
     }
 
-    public Card() {
-    }
-
     @Override
     public abstract boolean equals(Object obj);
 
     @Override
+    public abstract int hashCode();
+
+    @Override
     public abstract String toString();
 }
+
+

@@ -1,10 +1,11 @@
-package domain.entities;
+package domain.valueobjects;
+
+import java.util.Objects;
+
+import domain.entities.CardColor;
 
 public class NumberCard extends Card {
-    private int number;
-
-    public NumberCard() {
-    }
+    private final int number;
 
     public NumberCard(CardColor color, int number) {
         super(number, color);
@@ -17,12 +18,16 @@ public class NumberCard extends Card {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof NumberCard)){
+        if (!(obj instanceof NumberCard)) {
             return false;
         }
-
         NumberCard other = (NumberCard) obj;
         return number == other.number && getColor().equals(other.getColor());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, getColor());
     }
 
     @Override

@@ -2,6 +2,8 @@ package domain.entities;
 
 import java.util.List;
 
+import domain.valueobjects.Card;
+
 public class PlayerWithCards {
     private Player player;
     private List<Card> playerCards;

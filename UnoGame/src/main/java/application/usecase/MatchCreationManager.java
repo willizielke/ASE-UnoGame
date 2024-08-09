@@ -3,7 +3,6 @@ package application.usecase;
 import java.util.ArrayList;
 import java.util.List;
 
-import domain.entities.Card;
 import domain.entities.Deck;
 import domain.entities.DeckBuilder;
 import domain.entities.FastMatch;
@@ -14,6 +13,7 @@ import domain.repositories.PlayerRepository;
 import domain.service.LocalMatchStrategy;
 import domain.service.MatchRules;
 import domain.service.OriginalMatchStrategy;
+import domain.valueobjects.Card;
 import presentation.InputHandler;
 import presentation.OutputHandler;
 
