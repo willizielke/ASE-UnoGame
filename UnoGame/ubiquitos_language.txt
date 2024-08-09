@@ -1,0 +1,41 @@
+Ubiquitous Language Dokumentation
+
+1. Begriff: Player
+   - Bedeutung: Ein Teilnehmer im Spiel oder Wettbewerb.
+   - Begründung: Der Begriff "Player" ist sowohl im Domänenmodell als auch im Sourcecode klar definiert und wird von beiden Seiten (Domänenexperten und Entwickler) gleichermaßen verstanden.
+
+2. Begriff: Competition
+   - Bedeutung: Ein Wettbewerb, in dem Spieler gegeneinander antreten.
+   - Begründung: "Competition" ist ein zentraler Begriff in der Domäne des Projekts, der von Domänenexperten und Entwicklern verwendet wird.
+
+3. Begriff: Match
+   - Bedeutung: Ein einzelnes Spiel innerhalb einer Competition.
+   - Begründung: Der Begriff "Match" wird sowohl von Domänenexperten als auch von Entwicklern verwendet, um ein einzelnes Spiel zu beschreiben.
+
+4. Begriff: Card
+   - Bedeutung: Ein Spielobjekt, das von Spielern im Match verwendet wird.
+   - Begründung: Der Begriff "Card" ist ein grundlegendes Element der Spielmechanik, das sowohl von Domänenexperten als auch von Entwicklern verstanden und verwendet wird.
+
+5. Begriff: Deck
+   - Bedeutung: Eine Sammlung von Karten, die ein Spieler im Spiel verwenden kann.
+   - Begründung: "Deck" ist ein zentraler Begriff im Spiel, der von beiden Seiten verwendet wird, um eine Sammlung von Karten zu beschreiben.
+
+6. Begriff: Strategy
+   - Bedeutung: Eine Methode oder ein Plan, der verwendet wird, um ein Match zu gewinnen.
+   - Begründung: Der Begriff "Strategy" beschreibt die verschiedenen Ansätze, die Spieler verwenden können, um in einem Match erfolgreich zu sein, und wird von Domänenexperten und Entwicklern gleichermaßen verwendet.
+
+7. Begriff: Rule
+   - Bedeutung: Eine festgelegte Anweisung, die das Spielgeschehen steuert.
+   - Begründung: "Rule" ist ein wichtiger Begriff, der die Spielregeln beschreibt und sowohl von Domänenexperten als auch von Entwicklern verstanden wird.
+
+8. Begriff: Repository
+   - Bedeutung: Eine Schnittstelle zur Speicherung und Verwaltung von Datenobjekten.
+   - Begründung: Der Begriff "Repository" wird verwendet, um eine Abstraktion für die Datenspeicherung zu beschreiben und ist sowohl in der Domäne als auch im Code präsent.
+
+9. Begriff: Manager
+   - Bedeutung: Eine Klasse oder Komponente, die für die Verwaltung bestimmter Anwendungsfälle oder Prozesse verantwortlich ist.
+   - Begründung: Der Begriff "Manager" beschreibt die Verantwortlichkeiten bestimmter Klassen, die verschiedene Anwendungsfälle oder Prozesse im System verwalten.
+
+10. Begriff: InputHandler / OutputHandler
+    - Bedeutung: Komponenten, die für die Eingabe von Benutzerdaten bzw. die Ausgabe von Informationen an den Benutzer verantwortlich sind.
+    - Begründung: Diese Begriffe beschreiben die Schnittstellen zur Benutzerinteraktion und sind sowohl für Domänenexperten als auch für Entwickler klar verständlich.
