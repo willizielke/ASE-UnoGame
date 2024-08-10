@@ -2,7 +2,7 @@ package domain.valueobjects;
 
 import java.util.Objects;
 
-import domain.entities.CardColor;
+import domain.enums.CardColor;
 
 public class NumberCard extends Card {
     private final int number;

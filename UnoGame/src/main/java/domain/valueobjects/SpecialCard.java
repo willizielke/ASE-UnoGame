@@ -2,18 +2,18 @@ package domain.valueobjects;
 
 import java.util.Objects;
 
-import domain.entities.CardColor;
-import domain.entities.CardNames;
+import domain.enums.CardColor;
+import domain.enums.CardName;
 
 public class SpecialCard extends Card {
-    private final CardNames symbol;
+    private final CardName symbol;
 
-    public SpecialCard(CardColor color, CardNames symbol) {
+    public SpecialCard(CardColor color, CardName symbol) {
         super(10, color);
         this.symbol = symbol;
     }
 
-    public CardNames getSymbol() {
+    public CardName getSymbol() {
         return symbol;
     }
 

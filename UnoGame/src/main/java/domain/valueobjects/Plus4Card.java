@@ -2,8 +2,8 @@ package domain.valueobjects;
 
 import java.util.Objects;
 
-import domain.entities.CardColor;
-import domain.entities.CardNames;
+import domain.enums.CardColor;
+import domain.enums.CardName;
 
 public class Plus4Card extends Card {
     public Plus4Card() {
@@ -22,6 +22,6 @@ public class Plus4Card extends Card {
 
     @Override
     public String toString() {
-        return CardNames.PLUS4.toString();
+        return CardName.PLUS4.toString();
     }
 }

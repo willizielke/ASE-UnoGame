@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import domain.entities.CardColor;
-import domain.entities.CardNames;
 import domain.entities.Deck;
 import domain.entities.DeckBuilder;
 import domain.entities.FastMatch;
@@ -14,6 +12,8 @@ import domain.entities.Match;
 import domain.entities.Player;
 import domain.entities.PlayerHistoryData;
 import domain.entities.PlayerWithCards;
+import domain.enums.CardColor;
+import domain.enums.CardName;
 import domain.repositories.PlayerRepository;
 import domain.service.Addition;
 import domain.service.Calculator;
@@ -351,7 +351,7 @@ public class MatchProcessManager {
             // If the lastCard is not Plus4, then card is Plus2
             if (playedCard instanceof SpecialCard) {
                 SpecialCard playedSpecialCard = (SpecialCard) playedCard;
-                if (playedSpecialCard.getSymbol() == CardNames.PLUS2) {
+                if (playedSpecialCard.getSymbol() == CardName.PLUS2) {
                     return true;
                 }
             }

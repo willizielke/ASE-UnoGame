@@ -1,6 +1,6 @@
-package domain.entities;
+package domain.enums;
 
-public enum CardNames {
+public enum CardName {
     ZERO,
     REVERSE,
     PLUS2,

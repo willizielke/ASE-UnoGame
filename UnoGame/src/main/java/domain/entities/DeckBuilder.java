@@ -3,6 +3,8 @@ package domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.enums.CardColor;
+import domain.enums.CardName;
 import domain.valueobjects.Card;
 import domain.valueobjects.NumberCard;
 import domain.valueobjects.Plus4Card;
@@ -25,7 +27,7 @@ public class DeckBuilder {
         return this;
     }
 
-    public DeckBuilder addSpecialCard(CardColor color, CardNames symbol) {
+    public DeckBuilder addSpecialCard(CardColor color, CardName symbol) {
         cards.add(new SpecialCard(color, symbol));
         return this;
     }
@@ -54,14 +56,14 @@ public class DeckBuilder {
                 deckBuilder.addNumberCard(color, number);
                 deckBuilder.addNumberCard(color, number);
             }
-            deckBuilder.addSpecialCard(color, CardNames.ZERO)
-                    .addSpecialCard(color, CardNames.ZERO)
-                    .addSpecialCard(color, CardNames.SKIP)
-                    .addSpecialCard(color, CardNames.SKIP)
-                    .addSpecialCard(color, CardNames.REVERSE)
-                    .addSpecialCard(color, CardNames.REVERSE)
-                    .addSpecialCard(color, CardNames.PLUS2)
-                    .addSpecialCard(color, CardNames.PLUS2);
+            deckBuilder.addSpecialCard(color, CardName.ZERO)
+                    .addSpecialCard(color, CardName.ZERO)
+                    .addSpecialCard(color, CardName.SKIP)
+                    .addSpecialCard(color, CardName.SKIP)
+                    .addSpecialCard(color, CardName.REVERSE)
+                    .addSpecialCard(color, CardName.REVERSE)
+                    .addSpecialCard(color, CardName.PLUS2)
+                    .addSpecialCard(color, CardName.PLUS2);
         }
         deckBuilder.addWishCard()
                 .addWishCard()
