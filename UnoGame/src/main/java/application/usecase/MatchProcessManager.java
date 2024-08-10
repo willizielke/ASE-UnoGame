@@ -213,6 +213,7 @@ public class MatchProcessManager {
             PlayerWithCards nextPlayer = playersWithCardsList.get(nextPlayerIndex);
             PlayerWithCards updatedNextPlayer = new PlayerWithCards(nextPlayer.getPlayer(),
                     currentPlayer.getPlayerCards());
+            updatedNextPlayer.setTotalCardPoints(countPoints(updatedNextPlayer));
             updatedPlayersWithCardsList.add(updatedNextPlayer);
         }
         match.setPlayersWithCardsList(updatedPlayersWithCardsList);
@@ -410,7 +411,7 @@ public class MatchProcessManager {
 
     public void setPlayerStatistics() throws Exception {
         for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
-            PlayerHistoryData playerHistoryStatistic = playerWithCards.getPlayer().getPlayerStats();
+            PlayerHistoryData playerHistoryStatistic = playerRepository.loadPlayer(playerWithCards.getPlayer().getId()).getPlayerStats();
             playerHistoryStatistic
                     .setAccumulatedPoints(playerHistoryStatistic.getAccumulatedPoints() + countPoints(playerWithCards));
             playerHistoryStatistic.setMatchCount(playerHistoryStatistic.getMatchCount() + 1);

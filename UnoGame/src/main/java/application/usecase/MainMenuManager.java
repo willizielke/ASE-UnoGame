@@ -98,9 +98,7 @@ public class MainMenuManager {
         }
         OutputHandler.printLoadMessage(UseCaseConstants.COMPETITION);
         for (int i = 0; i < competitions.size(); i++) {
-            if (competitions.get(i).getWinnerId() == -1) {
-                System.out.println((i + 1) + ". " + competitions.get(i).getName());
-            }
+            System.out.println((i + 1) + ". " + competitions.get(i).getName());
         }
         int optionNr = InputHandler.getNumberBetween(1, competitions.size());
         Competition competition = competitionRepository.loadCompetition(competitions.get(optionNr - 1).getName());

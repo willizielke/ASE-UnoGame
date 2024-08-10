@@ -88,7 +88,7 @@ public class OutputHandler {
     }
 
     public static final void printTotalScores() {
-        System.out.println("Total scores (you get elimination if more than 101):");
+        System.out.println("Total scores (you get eliminated if more than 101):");
     }
 
     public static final void printTotalWins(int matchesToWin) {
@@ -147,6 +147,10 @@ public class OutputHandler {
 
     public static final void printInvalidInputMessagePlayerIsAlreadyInTheGame() {
         System.out.println("The Player is already in the Game. Please enter a different Player.");
+    }
+
+    public static final void printInvalidInputMessageNameAlreadyExists(String type) {
+        System.out.println("The " + type + " already exists. Please enter a different " + type + ".");
     }
 
     // clear console

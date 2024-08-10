@@ -25,9 +25,15 @@ public class CompetitionCreationManager {
 
     public Competition createCompetition() throws Exception {
         OutputHandler.printGetNameMessage(UseCaseConstants.COMPETITION);
-        competition.setName(InputHandler.getName(UseCaseConstants.COMPETITION));
+        while (competition.getName() == null) {
+            String competitionName = InputHandler.getName(UseCaseConstants.COMPETITION);
+            if (competitionRepository.checkIfNameAlreadyExistsCompetition(competitionName)) {
+                OutputHandler.printInvalidInputMessageNameAlreadyExists(competitionName);
+                continue;
+            }
+            competition.setName(competitionName);
+        }
         OutputHandler.printGetPlayerCountMessage();
-
         int playerCount = InputHandler.getNumberBetween(1, 10);
 
         for (int i = 1; i <= playerCount; i++) {
@@ -55,6 +61,10 @@ public class CompetitionCreationManager {
         String playerName = InputHandler.getName(UseCaseConstants.PLAYER);
         int id = playerRepository.readAllPlayers().size();
         Player player = new Player(playerName, id);
+        if (playerRepository.checkIfNameAlreadyExistsPlayer(playerName)) {
+            OutputHandler.printInvalidInputMessagePlayerIsAlreadyInTheGame();
+            return null;
+        }
         playerRepository.savePlayer(player);
         return player;
     }
@@ -71,13 +81,17 @@ public class CompetitionCreationManager {
     }
 
     public Player createOrLoadPlayer() throws Exception {
-        OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
-        int option = InputHandler.getNumberBetween(1, 2);
-        if (option == 1) {
-            return createPlayer();
-        } else {
-            return loadPlayer();
+        Player player = null;
+        while (player == null) {
+            OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
+            int option = InputHandler.getNumberBetween(1, 2);
+            if (option == 1) {
+                player = createPlayer();
+            } else {
+                player = loadPlayer();
+            }
         }
+        return player;
     }
 
     public boolean playerIsAlreadyInTheCompetition(Player player, List<Player> playersList) {
@@ -103,7 +117,6 @@ public class CompetitionCreationManager {
     }
 
     public CompetitionRules getCompetitionRules() {
-        OutputHandler.printCompetitionRulesSelection();
         OutputHandler.printCompetitionRulesSelection();
         int competitionRulesOption = InputHandler.getNumberBetween(1, 2);
 

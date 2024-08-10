@@ -20,7 +20,7 @@ public class HistoryManager {
 
         int sortOption;
         do {
-
+            OutputHandler.clearConsole();
             System.out.printf("%-15s | %-18s | %-22s | %-11s | %-15s | %-16s | %-19s | %-15s%n",
                     "Player Name", "Competition Count", "Competition Win Count", "Match Count",
                     "Match Win Count", "Match Lose Count", "Accumulated Points", "Points Per Match");

@@ -87,6 +87,10 @@ public class MatchCreationManager {
         String playerName = InputHandler.getName(UseCaseConstants.PLAYER);
         int id = playerRepository.readAllPlayers().size();
         Player player = new Player(playerName, id);
+        if(playerRepository.checkIfNameAlreadyExistsPlayer(playerName)) {
+            OutputHandler.printInvalidInputMessageNameAlreadyExists(UseCaseConstants.PLAYER);
+            return null;
+        }
         playerRepository.savePlayer(player);
         return player;
     }
@@ -94,6 +98,10 @@ public class MatchCreationManager {
     public Player loadPlayer() throws Exception {
         OutputHandler.printLoadMessage(UseCaseConstants.PLAYER);
         List<Player> players = playerRepository.readAllPlayers();
+        if(players.size() == 0) {
+            OutputHandler.printNotInDBMessage(UseCaseConstants.PLAYER);
+            return null;
+        }
         for (int i = 0; i < players.size(); i++) {
             System.out.println((i + 1) + ". " + players.get(i).getPlayerName());
         }
@@ -103,13 +111,17 @@ public class MatchCreationManager {
     }
 
     public Player createOrLoadPlayer() throws Exception {
-        OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
-        int option = InputHandler.getNumberBetween(1, 2);
-        if (option == 1) {
-            return createPlayer();
-        } else {
-            return loadPlayer();
+        Player player = null;
+        while (player == null) {
+            OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
+            int option = InputHandler.getNumberBetween(1, 2);
+            if (option == 1) {
+                player = createPlayer();
+            } else {
+                player = loadPlayer();
+            }
         }
+        return player;
     }
 
     public boolean playerIsAlreadyInTheMatch(Player player, List<PlayerWithCards> playersWithCardsList) {

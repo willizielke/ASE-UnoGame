@@ -29,6 +29,11 @@ public abstract class Card {
         this.color = color.toString();
     }
 
+    public Card() {
+        this.points = 0;
+        this.color = "";
+    }
+
     @Override
     public abstract boolean equals(Object obj);
 

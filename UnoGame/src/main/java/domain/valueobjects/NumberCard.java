@@ -12,6 +12,11 @@ public class NumberCard extends Card {
         this.number = number;
     }
 
+    public NumberCard() {
+        super();
+        this.number = 0;
+    }
+
     public int getNumber() {
         return number;
     }

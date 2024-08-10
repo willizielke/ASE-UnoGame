@@ -25,7 +25,10 @@ public class CompetitionProcessManager {
 
     public void startCompetition(Competition competition) throws Exception {
         this.competition = competition;
-        while (competitionIsNotOver()) {
+        if (competitionIsOver()) {
+            return;
+        }
+        while (!competitionIsOver()) {
             OutputHandler.clearConsole();
             OutputHandler.printCompetitionProcessViewSelection();
             int selection = InputHandler.getNumberBetween(1, 3);
@@ -43,7 +46,7 @@ public class CompetitionProcessManager {
         setCompetitionStatisticFinal();
     }
 
-    public boolean competitionIsNotOver() {
+    public boolean competitionIsOver() {
         boolean isLeastPointsMode = competition.getCompetitionRules().isLeastPointsMode();
         if (isLeastPointsMode) {
             int playersStillInGame = 0;
@@ -59,6 +62,7 @@ public class CompetitionProcessManager {
                         competition.setWinnerId(playerStats.getPlayer().getId());
                         for (Player player : competition.getPlayers()) {
                             if (player.getId() == playerStats.getPlayer().getId()) {
+                                printAllMatchScores();
                                 OutputHandler.printWinnerOfCompetition(player.getPlayerName());
                                 InputHandler.getInput();
                             }
@@ -72,6 +76,7 @@ public class CompetitionProcessManager {
                     competition.setWinnerId(playerStats.getPlayer().getId());
                     for (Player player : competition.getPlayers()) {
                         if (player.getId() == playerStats.getPlayer().getId()) {
+                            printAllMatchScores();
                             OutputHandler.printWinnerOfCompetition(player.getPlayerName());
                             InputHandler.getInput();
                         }
@@ -79,7 +84,7 @@ public class CompetitionProcessManager {
                 }
             }
         }
-        return competition.getWinnerId() == -1;
+        return competition.getWinnerId() != -1;
     }
 
     public Match playMatch() throws Exception {
@@ -166,7 +171,7 @@ public class CompetitionProcessManager {
 
     public void setCompetitionStatisticFinal() throws Exception {
         for (Player player : competition.getPlayers()) {
-            player.getPlayerStats().setCompetitionWinCount(player.getPlayerStats().getCompetitionCount() + 1);
+            player.getPlayerStats().setCompetitionCount(player.getPlayerStats().getCompetitionCount() + 1);
             if (player.getId() == competition.getWinnerId()) {
                 player.getPlayerStats().setCompetitionWinCount(player.getPlayerStats().getCompetitionWinCount() + 1);
             }

@@ -13,6 +13,11 @@ public class SpecialCard extends Card {
         this.symbol = symbol;
     }
 
+    public SpecialCard() {
+        super();
+        this.symbol = null;
+    }
+
     public CardName getSymbol() {
         return symbol;
     }
