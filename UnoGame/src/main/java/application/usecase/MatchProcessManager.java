@@ -15,9 +15,6 @@ import domain.entities.PlayerWithCards;
 import domain.enums.CardColor;
 import domain.enums.CardName;
 import domain.repositories.PlayerRepository;
-import domain.service.Addition;
-import domain.service.Calculator;
-import domain.service.Subtraction;
 import domain.valueobjects.Card;
 import domain.valueobjects.NumberCard;
 import domain.valueobjects.Plus4Card;
@@ -38,7 +35,6 @@ public class MatchProcessManager {
     private int cardsToDraw = 1;
     private boolean isClockwise = true;
     private Card playedCard;
-    private Calculator calculator = new Calculator();
 
     public MatchProcessManager(PlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
@@ -50,7 +46,7 @@ public class MatchProcessManager {
         match.playedCards.add(match.deck.remove(0));
         this.lastCard = match.playedCards.get(match.playedCards.size() - 1);
         for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
-            playerWithCards.setTotalCardPoints(countPoints(playerWithCards));
+            playerWithCards.setTotalCardPoints(playerWithCards.countTotalCardPoints());
         }
 
         while (matchIsNotOver(match)) {
@@ -108,10 +104,8 @@ public class MatchProcessManager {
     private void handleCardPlay(List<Integer> numbers) {
         numbers.sort(Collections.reverseOrder()); // Sort the numbers in descending order
         for (int index : numbers) {
-            Card card = playerWithCards.removeCard(index - 1);
-            Subtraction subtraction = new Subtraction(playerWithCards.getTotalCardPoints(), card.getPoints());
-            calculator.calculate(subtraction);
-            playerWithCards.setTotalCardPoints(subtraction.getResult());
+            Card card = playerWithCards.getPlayerCards().get(index - 1);
+            playerWithCards.removeCard(index - 1);
             match.playedCards.add(card);
         }
         handleCardAction(numbers.size());
@@ -213,7 +207,7 @@ public class MatchProcessManager {
             PlayerWithCards nextPlayer = playersWithCardsList.get(nextPlayerIndex);
             PlayerWithCards updatedNextPlayer = new PlayerWithCards(nextPlayer.getPlayer(),
                     currentPlayer.getPlayerCards());
-            updatedNextPlayer.setTotalCardPoints(countPoints(updatedNextPlayer));
+            updatedNextPlayer.setTotalCardPoints(updatedNextPlayer.countTotalCardPoints());
             updatedPlayersWithCardsList.add(updatedNextPlayer);
         }
         match.setPlayersWithCardsList(updatedPlayersWithCardsList);
@@ -244,9 +238,6 @@ public class MatchProcessManager {
         for (int i = 0; i < cardsToDraw; i++) {
             Card card = match.deck.remove(0);
             playerWithCards.addCard(card);
-            Addition addition = new Addition(playerWithCards.getTotalCardPoints(), card.getPoints());
-            calculator.calculate(addition);
-            playerWithCards.setTotalCardPoints(addition.getResult());
         }
         this.cardsToDraw = 1;
         this.hasAlreadyPulled = true;
@@ -413,7 +404,7 @@ public class MatchProcessManager {
         for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
             PlayerHistoryData playerHistoryStatistic = playerRepository.loadPlayer(playerWithCards.getPlayer().getId()).getPlayerStats();
             playerHistoryStatistic
-                    .setAccumulatedPoints(playerHistoryStatistic.getAccumulatedPoints() + countPoints(playerWithCards));
+                    .setAccumulatedPoints(playerHistoryStatistic.getAccumulatedPoints() + playerWithCards.countTotalCardPoints());
             playerHistoryStatistic.setMatchCount(playerHistoryStatistic.getMatchCount() + 1);
             if (playerWithCards.getPlayerCards().size() == 0) {
                 playerHistoryStatistic.setMatchWinCount(playerHistoryStatistic.getMatchWinCount() + 1);
@@ -426,15 +417,5 @@ public class MatchProcessManager {
             updatedPlayer.setPlayerStats(playerHistoryStatistic);
             playerRepository.updatePlayer(updatedPlayer);
         }
-    }
-
-    public int countPoints(PlayerWithCards playerWithCards) {
-        int points = 0;
-        for (Card card : playerWithCards.getPlayerCards()) {
-            Addition addition = new Addition(points, card.getPoints());
-            calculator.calculate(addition);
-            points = addition.getResult();
-        }
-        return points;
     }
 }
