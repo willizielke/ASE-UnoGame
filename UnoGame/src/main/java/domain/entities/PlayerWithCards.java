@@ -10,7 +10,7 @@ public class PlayerWithCards {
     private Player player;
     private List<Card> playerCards;
     private int totalCardPoints;
-    private Calculator calculator;
+    private Calculator calculator = new Calculator();;
 
     public PlayerWithCards() {
     }
