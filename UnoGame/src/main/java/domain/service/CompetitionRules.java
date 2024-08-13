@@ -1,8 +1,5 @@
 package domain.service;
 
-import presentation.InputHandler;
-import presentation.OutputHandler;
-
 public class CompetitionRules {
     private boolean isMatchWinsMode;
     private boolean isLeastPointsMode;
@@ -41,13 +38,12 @@ public class CompetitionRules {
         this.matchesToWin = matchesToWin;
     }
 
-    public void setCompetitionMode(int mode) {
+    public void setCompetitionMode(int mode, int matchesToWin) {
         if (mode == 1) {
             this.isMatchWinsMode = true;
             this.isLeastPointsMode = false;
             this.maxPoints = 0;
-            OutputHandler.getMatchesToWin();
-            this.matchesToWin = InputHandler.getNumberBetween(1, 10);
+            this.matchesToWin = matchesToWin;
         } else {
             this.isLeastPointsMode = true;
             this.isMatchWinsMode = false;

@@ -35,9 +35,11 @@ public class MatchProcessManager {
     private int cardsToDraw = 1;
     private boolean isClockwise = true;
     private Card playedCard;
+    private InputHandler inputHandler;
 
-    public MatchProcessManager(PlayerRepository playerRepository) {
+    public MatchProcessManager(PlayerRepository playerRepository, InputHandler inputHandler) {
         this.playerRepository = playerRepository;
+        this.inputHandler = inputHandler;
     }
 
     public void startMatch(Match match) throws Exception {
@@ -67,7 +69,7 @@ public class MatchProcessManager {
             lastCard = match.playedCards.get(match.playedCards.size() - 1);
             printNextPlayerMove();
 
-            List<Integer> numbers = InputHandler.getNumbers(playerWithCards.getPlayerCards().size());
+            List<Integer> numbers = inputHandler.getNumbers(playerWithCards.getPlayerCards().size());
 
             if (numbers.get(0) == 0 && !hasAlreadyPulled) {
                 handleCardPull(cardsToDraw);
@@ -76,7 +78,7 @@ public class MatchProcessManager {
             } else {
                 if (!checkInput(numbers, playerWithCards.getPlayerCards())) {
                     OutputHandler.printInvalidInputMessage();
-                    InputHandler.getInput();
+                    inputHandler.getInput();
                     continue;
                 }
                 handleCardPlay(numbers);
@@ -176,7 +178,7 @@ public class MatchProcessManager {
 
     private CardColor getWishedColor() {
         OutputHandler.printWishColorMessage();
-        int wishedColorNr = InputHandler.getNumberBetween(1, 4);
+        int wishedColorNr = inputHandler.getNumberBetween(1, 4);
         switch (wishedColorNr) {
             case 1:
                 return CardColor.RED;
@@ -258,7 +260,7 @@ public class MatchProcessManager {
             if (playerWithCards.getPlayerCards().size() == 0) {
                 match.setWinnerId(playerWithCards.getPlayer().getId());
                 OutputHandler.printMatchOverMessage(playerWithCards.getPlayer().getPlayerName());
-                InputHandler.getInput();
+                inputHandler.getInput();
                 return false;
             }
         }
@@ -402,9 +404,11 @@ public class MatchProcessManager {
 
     public void setPlayerStatistics() throws Exception {
         for (PlayerWithCards playerWithCards : match.getPlayersWithCardsList()) {
-            PlayerHistoryData playerHistoryStatistic = playerRepository.loadPlayer(playerWithCards.getPlayer().getId()).getPlayerStats();
+            PlayerHistoryData playerHistoryStatistic = playerRepository.loadPlayer(playerWithCards.getPlayer().getId())
+                    .getPlayerStats();
             playerHistoryStatistic
-                    .setAccumulatedPoints(playerHistoryStatistic.getAccumulatedPoints() + playerWithCards.countTotalCardPoints());
+                    .setAccumulatedPoints(
+                            playerHistoryStatistic.getAccumulatedPoints() + playerWithCards.countTotalCardPoints());
             playerHistoryStatistic.setMatchCount(playerHistoryStatistic.getMatchCount() + 1);
             if (playerWithCards.getPlayerCards().size() == 0) {
                 playerHistoryStatistic.setMatchWinCount(playerHistoryStatistic.getMatchWinCount() + 1);

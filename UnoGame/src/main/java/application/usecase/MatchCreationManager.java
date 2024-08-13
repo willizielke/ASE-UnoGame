@@ -19,14 +19,16 @@ import presentation.OutputHandler;
 
 public class MatchCreationManager {
     private PlayerRepository playerRepository;
+    private InputHandler inputHandler;
 
-    public MatchCreationManager(PlayerRepository playerRepository) {
+    public MatchCreationManager(PlayerRepository playerRepository, InputHandler inputHandler) {
         this.playerRepository = playerRepository;
+        this.inputHandler = inputHandler;
     }
 
     public Match createFastMatch() {
         OutputHandler.printGetPlayerCountMessage();
-        int playerCount = InputHandler.getNumberBetween(2, 10);
+        int playerCount = inputHandler.getNumberBetween(2, 10);
         return new FastMatch(playerCount);
     }
 
@@ -34,7 +36,7 @@ public class MatchCreationManager {
         OutputHandler.printGetPlayerCountMessage();
         Match match = new Match();
 
-        int playerCount = InputHandler.getNumberBetween(1, 10);
+        int playerCount = inputHandler.getNumberBetween(1, 10);
         List<PlayerWithCards> playersWithCardsList = new ArrayList<PlayerWithCards>();
         Deck deck = DeckBuilder.createDeck();
         for (int i = 1; i <= playerCount; i++) {
@@ -84,7 +86,7 @@ public class MatchCreationManager {
 
     public Player createPlayer() throws Exception {
         OutputHandler.printGetNameMessage(UseCaseConstants.PLAYER);
-        String playerName = InputHandler.getName(UseCaseConstants.PLAYER);
+        String playerName = inputHandler.getName(UseCaseConstants.PLAYER);
         int id = playerRepository.readAllPlayers().size();
         Player player = new Player(playerName, id);
         if(playerRepository.checkIfNameAlreadyExistsPlayer(playerName)) {
@@ -105,7 +107,7 @@ public class MatchCreationManager {
         for (int i = 0; i < players.size(); i++) {
             System.out.println((i + 1) + ". " + players.get(i).getPlayerName());
         }
-        int optionNr = InputHandler.getNumberBetween(1, players.size());
+        int optionNr = inputHandler.getNumberBetween(1, players.size());
         Player player = playerRepository.loadPlayer(players.get(optionNr - 1).getId());
         return player;
     }
@@ -114,7 +116,7 @@ public class MatchCreationManager {
         Player player = null;
         while (player == null) {
             OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
-            int option = InputHandler.getNumberBetween(1, 2);
+            int option = inputHandler.getNumberBetween(1, 2);
             if (option == 1) {
                 player = createPlayer();
             } else {
@@ -135,7 +137,7 @@ public class MatchCreationManager {
 
     public MatchRules getMatchRules() {
         OutputHandler.printMatchRulesSelection();
-        int matchRulesOption = InputHandler.getNumberBetween(1, 2);
+        int matchRulesOption = inputHandler.getNumberBetween(1, 2);
         if (matchRulesOption == 1) {
             return new MatchRules(new LocalMatchStrategy());
         } else {

@@ -17,16 +17,19 @@ public class CompetitionCreationManager {
     private Competition competition = new Competition();
     private PlayerRepository playerRepository;
     private CompetitionRepository competitionRepository;
+    private InputHandler inputHandler;
 
-    public CompetitionCreationManager(PlayerRepository playerRepository, CompetitionRepository competitionRepository) {
+    public CompetitionCreationManager(PlayerRepository playerRepository, CompetitionRepository competitionRepository,
+            InputHandler inputHandler) {
         this.playerRepository = playerRepository;
         this.competitionRepository = competitionRepository;
+        this.inputHandler = inputHandler;
     }
 
     public Competition createCompetition() throws Exception {
         OutputHandler.printGetNameMessage(UseCaseConstants.COMPETITION);
         while (competition.getName() == null) {
-            String competitionName = InputHandler.getName(UseCaseConstants.COMPETITION);
+            String competitionName = inputHandler.getName(UseCaseConstants.COMPETITION);
             if (competitionRepository.checkIfNameAlreadyExistsCompetition(competitionName)) {
                 OutputHandler.printInvalidInputMessageNameAlreadyExists(competitionName);
                 continue;
@@ -34,7 +37,7 @@ public class CompetitionCreationManager {
             competition.setName(competitionName);
         }
         OutputHandler.printGetPlayerCountMessage();
-        int playerCount = InputHandler.getNumberBetween(1, 10);
+        int playerCount = inputHandler.getNumberBetween(1, 10);
 
         for (int i = 1; i <= playerCount; i++) {
             Player player = null;
@@ -58,7 +61,7 @@ public class CompetitionCreationManager {
 
     public Player createPlayer() throws Exception {
         OutputHandler.printGetNameMessage(UseCaseConstants.PLAYER);
-        String playerName = InputHandler.getName(UseCaseConstants.PLAYER);
+        String playerName = inputHandler.getName(UseCaseConstants.PLAYER);
         int id = playerRepository.readAllPlayers().size();
         Player player = new Player(playerName, id);
         if (playerRepository.checkIfNameAlreadyExistsPlayer(playerName)) {
@@ -75,7 +78,7 @@ public class CompetitionCreationManager {
         for (int i = 0; i < players.size(); i++) {
             System.out.println((i + 1) + ". " + players.get(i).getPlayerName());
         }
-        int optionNr = InputHandler.getNumberBetween(1, players.size());
+        int optionNr = inputHandler.getNumberBetween(1, players.size());
         Player player = playerRepository.loadPlayer(players.get(optionNr - 1).getId());
         return player;
     }
@@ -84,7 +87,7 @@ public class CompetitionCreationManager {
         Player player = null;
         while (player == null) {
             OutputHandler.printCreateOrLoadMessage(UseCaseConstants.PLAYER);
-            int option = InputHandler.getNumberBetween(1, 2);
+            int option = inputHandler.getNumberBetween(1, 2);
             if (option == 1) {
                 player = createPlayer();
             } else {
@@ -108,7 +111,7 @@ public class CompetitionCreationManager {
 
     public MatchRules getMatchRules() {
         OutputHandler.printMatchRulesSelection();
-        int matchRulesOption = InputHandler.getNumberBetween(1, 2);
+        int matchRulesOption = inputHandler.getNumberBetween(1, 2);
         if (matchRulesOption == 1) {
             return new MatchRules(new LocalMatchStrategy());
         } else {
@@ -118,10 +121,15 @@ public class CompetitionCreationManager {
 
     public CompetitionRules getCompetitionRules() {
         OutputHandler.printCompetitionRulesSelection();
-        int competitionRulesOption = InputHandler.getNumberBetween(1, 2);
+        int competitionRulesOption = inputHandler.getNumberBetween(1, 2);
 
         CompetitionRules competitionRules = new CompetitionRules();
-        competitionRules.setCompetitionMode(competitionRulesOption);
+        int matchesToWin = 0;
+        if(competitionRulesOption == 1) {
+            OutputHandler.getMatchesToWin();
+            matchesToWin = inputHandler.getNumberBetween(1, 10);
+        }
+        competitionRules.setCompetitionMode(competitionRulesOption, matchesToWin);
 
         return competitionRules;
     }

@@ -9,11 +9,11 @@ public class InputHandler {
 
     static Scanner scanner = new Scanner(System.in);
 
-    public static String getInput() {
+    public String getInput() {
         return scanner.nextLine();
     }
 
-    public static int getNumberBetween(int min, int max) {
+    public int getNumberBetween(int min, int max) {
         String input = getInput();
         while (!ValidationHelper.isNumberBetween(input, min, max)) {
             OutputHandler.printInvalidInputMessageNumberBetween(min, max);
@@ -22,7 +22,7 @@ public class InputHandler {
         return Integer.parseInt(input);
     }
 
-    public static String getName(String type) throws IOException {
+    public String getName(String type) throws IOException {
         String name;
         do {
             name = getInput();
@@ -38,7 +38,7 @@ public class InputHandler {
         return name;
     }
 
-    public static List<Integer> getNumbers(int max) {
+    public List<Integer> getNumbers(int max) {
         String numbersWithComma = "";
         List<Integer> list = new ArrayList<>();
         do {

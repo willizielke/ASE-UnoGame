@@ -54,7 +54,6 @@ public class DeckBuilder {
                 deckBuilder.addNumberCard(color, number);
             }
             deckBuilder.addSpecialCard(color, CardName.ZERO)
-                    .addSpecialCard(color, CardName.ZERO)
                     .addSpecialCard(color, CardName.SKIP)
                     .addSpecialCard(color, CardName.SKIP)
                     .addSpecialCard(color, CardName.REVERSE)

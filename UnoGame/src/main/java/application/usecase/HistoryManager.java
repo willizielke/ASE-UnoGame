@@ -10,9 +10,11 @@ import presentation.OutputHandler;
 
 public class HistoryManager {
     private PlayerRepository playerRepository;
+    private InputHandler inputHandler;
 
-    public HistoryManager(PlayerRepository playerRepository) {
+    public HistoryManager(PlayerRepository playerRepository, InputHandler inputHandler) {
         this.playerRepository = playerRepository;
+        this.inputHandler = inputHandler;
     }
 
     public void printHistory() throws Exception {
@@ -39,7 +41,7 @@ public class HistoryManager {
             }
 
             OutputHandler.printSortOptions();
-            sortOption = InputHandler.getNumberBetween(1, 8);
+            sortOption = inputHandler.getNumberBetween(1, 8);
             // sort the table after the selected header
             switch (sortOption) {
                 case 1:

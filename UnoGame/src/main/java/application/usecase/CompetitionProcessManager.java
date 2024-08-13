@@ -17,10 +17,12 @@ public class CompetitionProcessManager {
     private Competition competition;
     private PlayerRepository playerRepository;
     private CompetitionRepository competitionRepository;
+    private InputHandler inputHandler;
 
-    public CompetitionProcessManager(PlayerRepository playerRepository, CompetitionRepository competitionRepository) {
+    public CompetitionProcessManager(PlayerRepository playerRepository, CompetitionRepository competitionRepository, InputHandler inputHandler) {
         this.playerRepository = playerRepository;
         this.competitionRepository = competitionRepository;
+        this.inputHandler = inputHandler;
     }
 
     public void startCompetition(Competition competition) throws Exception {
@@ -31,7 +33,7 @@ public class CompetitionProcessManager {
         while (!competitionIsOver()) {
             OutputHandler.clearConsole();
             OutputHandler.printCompetitionProcessViewSelection();
-            int selection = InputHandler.getNumberBetween(1, 3);
+            int selection = inputHandler.getNumberBetween(1, 3);
             if (selection == 1) {
                 Match match = playMatch();
                 competition.getMatches().add(match);
@@ -64,7 +66,7 @@ public class CompetitionProcessManager {
                             if (player.getId() == playerStats.getPlayer().getId()) {
                                 printAllMatchScores();
                                 OutputHandler.printWinnerOfCompetition(player.getPlayerName());
-                                InputHandler.getInput();
+                                inputHandler.getInput();
                             }
                         }
                     }
@@ -78,7 +80,7 @@ public class CompetitionProcessManager {
                         if (player.getId() == playerStats.getPlayer().getId()) {
                             printAllMatchScores();
                             OutputHandler.printWinnerOfCompetition(player.getPlayerName());
-                            InputHandler.getInput();
+                            inputHandler.getInput();
                         }
                     }
                 }
@@ -88,10 +90,10 @@ public class CompetitionProcessManager {
     }
 
     public Match playMatch() throws Exception {
-        MatchCreationManager matchCreationManager = new MatchCreationManager(playerRepository);
+        MatchCreationManager matchCreationManager = new MatchCreationManager(playerRepository, inputHandler);
         Match match = matchCreationManager.createCompetitionMatch(getPlayersInGame(),
                 competition.getMatchRules());
-        MatchProcessManager matchProcessManager = new MatchProcessManager(playerRepository);
+        MatchProcessManager matchProcessManager = new MatchProcessManager(playerRepository, inputHandler);
         matchProcessManager.startMatch(match);
         return match;
     }
@@ -156,7 +158,7 @@ public class CompetitionProcessManager {
                 System.out.println(playerStats.getPlayer().getPlayerName() + ": " + playerStats.getMatchWinCount());
             }
         }
-        InputHandler.getInput();
+        inputHandler.getInput();
     }
 
     public List<Player> getPlayersInGame() {

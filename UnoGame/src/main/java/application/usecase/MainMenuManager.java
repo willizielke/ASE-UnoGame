@@ -14,11 +14,13 @@ import presentation.OutputHandler;
 public class MainMenuManager {
     private PlayerRepository playerRepository;
     private CompetitionRepository competitionRepository;
+    private InputHandler inputHandler;
 
     public MainMenuManager(PlayerRepository playerRepository, CompetitionRepository competitionRepository,
-            MatchStrategyRepository matchStrategyRepository) {
+            MatchStrategyRepository matchStrategyRepository, InputHandler inputHandler) {
         this.playerRepository = playerRepository;
         this.competitionRepository = competitionRepository;
+        this.inputHandler = inputHandler;
     }
 
     public void StartApplication() throws Exception {
@@ -26,7 +28,7 @@ public class MainMenuManager {
         while (mainOptionNr != 5) {
             OutputHandler.clearConsole();
             OutputHandler.printMainMenuSelection();
-            mainOptionNr = InputHandler.getNumberBetween(1, 5);
+            mainOptionNr = inputHandler.getNumberBetween(1, 5);
             ;
             switch (mainOptionNr) {
                 case 1:
@@ -54,9 +56,9 @@ public class MainMenuManager {
     public void StartMatchMenu() throws Exception {
         OutputHandler.clearConsole();
         OutputHandler.printMatchViewSelection();
-        int matchOptionNr = InputHandler.getNumberBetween(1, 3);
-        MatchCreationManager matchCreationManager = new MatchCreationManager(playerRepository);
-        MatchProcessManager matchProcessManager = new MatchProcessManager(playerRepository);
+        int matchOptionNr = inputHandler.getNumberBetween(1, 3);
+        MatchCreationManager matchCreationManager = new MatchCreationManager(playerRepository, inputHandler);
+        MatchProcessManager matchProcessManager = new MatchProcessManager(playerRepository, inputHandler);
         if (matchOptionNr == 1) {
             Match match = matchCreationManager.createFastMatch();
             matchProcessManager.startMatch(match);
@@ -71,20 +73,20 @@ public class MainMenuManager {
     public void StartCompetitionMenu() throws Exception {
         OutputHandler.clearConsole();
         OutputHandler.printCompetitionViewSelection();
-        int competitionOptionNr = InputHandler.getNumberBetween(1, 3);
+        int competitionOptionNr = inputHandler.getNumberBetween(1, 3);
         Competition competition = new Competition();
         if (competitionOptionNr == 1) {
-            competition = new CompetitionCreationManager(playerRepository, competitionRepository).createCompetition();
+            competition = new CompetitionCreationManager(playerRepository, competitionRepository, inputHandler).createCompetition();
             if (competition == null) {
                 return;
             }
-            new CompetitionProcessManager(playerRepository, competitionRepository).startCompetition(competition);
+            new CompetitionProcessManager(playerRepository, competitionRepository, inputHandler).startCompetition(competition);
         } else if (competitionOptionNr == 2) {
             competition = loadCompetition();
             if (competition == null) {
                 return;
             }
-            new CompetitionProcessManager(playerRepository, competitionRepository).startCompetition(competition);
+            new CompetitionProcessManager(playerRepository, competitionRepository, inputHandler).startCompetition(competition);
         } else if (competitionOptionNr == 3) {
             return;
         }
@@ -100,13 +102,13 @@ public class MainMenuManager {
         for (int i = 0; i < competitions.size(); i++) {
             System.out.println((i + 1) + ". " + competitions.get(i).getName());
         }
-        int optionNr = InputHandler.getNumberBetween(1, competitions.size());
+        int optionNr = inputHandler.getNumberBetween(1, competitions.size());
         Competition competition = competitionRepository.loadCompetition(competitions.get(optionNr - 1).getName());
         return competition;
     }
 
     public void StartHistoryMenu() throws Exception {
         OutputHandler.clearConsole();
-        new HistoryManager(playerRepository).printHistory();
+        new HistoryManager(playerRepository, inputHandler).printHistory();
     }
 }
