@@ -6,6 +6,7 @@ public class Player {
     private int id;
 
     public Player() {
+    	this.playerStats= new PlayerHistoryData();
     }
 
     public Player(String playerName, int id) {

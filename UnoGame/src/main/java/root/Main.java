@@ -9,6 +9,7 @@ import domain.repositories.PlayerRepository;
 import infrastructure.FileCompetitionRepository;
 import infrastructure.FileMatchStrategyRepository;
 import infrastructure.FilePlayerRepository;
+import presentation.InputHandler;
 
 public class Main {
     private static final String filePath = "C:\\Users\\wzielke\\Desktop\\Ase-UnoGame\\UnoGame\\src\\file_db\\";
@@ -23,8 +24,10 @@ public class Main {
         CompetitionRepository competitionRepository = new FileCompetitionRepository(objectMapper, filePathCompetition);
         MatchStrategyRepository matchStrategyRepository = new FileMatchStrategyRepository(objectMapper,
                 filePathMatchStrategy);
+        InputHandler inputHandler = new InputHandler();
+        
         MainMenuManager mainMenuManager = new MainMenuManager(playerRepository, competitionRepository,
-                matchStrategyRepository);
+                matchStrategyRepository, inputHandler);
         mainMenuManager.StartApplication();
     }
 }
